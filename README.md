@@ -2,6 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/5y9eug3x9j078x6i?svg=true)](https://ci.appveyor.com/project/belkiss/sharpmake-36817)
 [![Coverity Scan](https://scan.coverity.com/projects/14185/badge.svg)](https://scan.coverity.com/projects/belkiss-sharpmake)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=SharpmakeFork)](https://sonarcloud.io/dashboard?id=SharpmakeFork)
 
 ## Introduction
 Sharpmake is a generator for Visual Studio projects and solutions. It is
