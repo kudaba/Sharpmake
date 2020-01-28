@@ -716,7 +716,10 @@ namespace Sharpmake.Generators.Apple
             options["RemoveLibraryPaths"] = "";
             options["RemoveSpecificDeviceLibraryPaths"] = "";
             options["RemoveSpecificSimulatorLibraryPaths"] = "";
-            options["SDKRoot"] = "iphoneos";
+            if (conf.Platform == Platform.mac)
+                options["SDKRoot"] = "macosx10.5";
+            else
+                options["SDKRoot"] = "iphoneos";
             options["SpecificLibraryPaths"] = RemoveLineTag;
             options["TargetedDeviceFamily"] = "1,2";
             options["UsePrecompiledHeader"] = "NO";
@@ -755,9 +758,11 @@ namespace Sharpmake.Generators.Apple
                 Options.Option(Options.XCode.Compiler.CppLanguageStandard.CPP98, () => options["CppStandard"] = "c++98"),
                 Options.Option(Options.XCode.Compiler.CppLanguageStandard.CPP11, () => options["CppStandard"] = "c++11"),
                 Options.Option(Options.XCode.Compiler.CppLanguageStandard.CPP14, () => options["CppStandard"] = "c++14"),
+                Options.Option(Options.XCode.Compiler.CppLanguageStandard.CPP17, () => options["CppStandard"] = "c++17"),
                 Options.Option(Options.XCode.Compiler.CppLanguageStandard.GNU98, () => options["CppStandard"] = "gnu++98"),
                 Options.Option(Options.XCode.Compiler.CppLanguageStandard.GNU11, () => options["CppStandard"] = "gnu++11"),
-                Options.Option(Options.XCode.Compiler.CppLanguageStandard.GNU14, () => options["CppStandard"] = "gnu++14")
+                Options.Option(Options.XCode.Compiler.CppLanguageStandard.GNU14, () => options["CppStandard"] = "gnu++14"),
+                Options.Option(Options.XCode.Compiler.CppLanguageStandard.GNU17, () => options["CppStandard"] = "gnu++17")
                 );
 
 
@@ -853,6 +858,7 @@ namespace Sharpmake.Generators.Apple
                 options["MacOSDeploymentTarget"] = macDeploymentTarget.MinimumVersion;
 
             Options.SelectOption(conf,
+                Options.Option(Options.XCode.Compiler.LibraryStandard.CompilerDefault, () => options["LibraryStandard"] = RemoveLineTag),
                 Options.Option(Options.XCode.Compiler.LibraryStandard.CppStandard, () => options["LibraryStandard"] = "libstdc++"),
                 Options.Option(Options.XCode.Compiler.LibraryStandard.LibCxx, () => options["LibraryStandard"] = "libc++")
                 );

@@ -21,8 +21,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\debug</OutputPath>
-    <IntermediateOutputPath>..\tmp\obj\v4_7_2_debug\sharpmake.application</IntermediateOutputPath>
+    <OutputPath>..\bin\Debug</OutputPath>
+    <IntermediateOutputPath>..\tmp\obj\v4_7_2_Debug\Sharpmake.Application</IntermediateOutputPath>
     <BaseIntermediateOutputPath>..\tmp\obj\v4_7_2_Debug\Sharpmake.Application</BaseIntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
@@ -35,8 +35,8 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\release</OutputPath>
-    <IntermediateOutputPath>..\tmp\obj\v4_7_2_release\sharpmake.application</IntermediateOutputPath>
+    <OutputPath>..\bin\Release</OutputPath>
+    <IntermediateOutputPath>..\tmp\obj\v4_7_2_Release\Sharpmake.Application</IntermediateOutputPath>
     <BaseIntermediateOutputPath>..\tmp\obj\v4_7_2_Release\Sharpmake.Application</BaseIntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>

@@ -18,8 +18,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\debug</OutputPath>
-    <IntermediateOutputPath>..\tmp\obj\v4_7_2_debug\sharpmake.visualstudio</IntermediateOutputPath>
+    <OutputPath>..\bin\Debug</OutputPath>
+    <IntermediateOutputPath>..\tmp\obj\v4_7_2_Debug\Sharpmake.VisualStudio</IntermediateOutputPath>
     <BaseIntermediateOutputPath>..\tmp\obj\v4_7_2_Debug\Sharpmake.VisualStudio</BaseIntermediateOutputPath>
     <DocumentationFile>..\bin\Debug\Sharpmake.VisualStudio.xml</DocumentationFile>
     <DefineConstants>DEBUG;TRACE;VISUAL_STUDIO_EXTENSION_ENABLED</DefineConstants>
@@ -34,8 +34,8 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\release</OutputPath>
-    <IntermediateOutputPath>..\tmp\obj\v4_7_2_release\sharpmake.visualstudio</IntermediateOutputPath>
+    <OutputPath>..\bin\Release</OutputPath>
+    <IntermediateOutputPath>..\tmp\obj\v4_7_2_Release\Sharpmake.VisualStudio</IntermediateOutputPath>
     <BaseIntermediateOutputPath>..\tmp\obj\v4_7_2_Release\Sharpmake.VisualStudio</BaseIntermediateOutputPath>
     <DocumentationFile>..\bin\Release\Sharpmake.VisualStudio.xml</DocumentationFile>
     <DefineConstants>TRACE;VISUAL_STUDIO_EXTENSION_ENABLED</DefineConstants>

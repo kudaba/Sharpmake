@@ -18,15 +18,15 @@ namespace Sharpmake
 {
     public static partial class Apple
     {
-        [PlatformImplementation(Platform.mac,
+        [PlatformImplementation(Platform.ios,
             typeof(IPlatformDescriptor),
             typeof(Project.Configuration.IConfigurationTasks))]
-        public sealed class MacOsPlatform : IPlatformDescriptor, Project.Configuration.IConfigurationTasks
+        public sealed class IosPlatform : IPlatformDescriptor, Project.Configuration.IConfigurationTasks
         {
             #region IPlatformDescriptor implementation.
-            public string SimplePlatformString => "Mac";
+            public string SimplePlatformString => "iOS";
             public bool IsMicrosoftPlatform => false;
-            public bool IsPcPlatform => true;
+            public bool IsPcPlatform => false;
             public bool IsUsingClang => true;
             public bool HasDotNetSupport => false; // maybe? (.NET Core)
             public bool HasSharedLibrarySupport => true;

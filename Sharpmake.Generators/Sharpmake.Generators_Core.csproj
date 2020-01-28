@@ -17,8 +17,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\debug</OutputPath>
-    <IntermediateOutputPath>..\tmp\obj\netcore3_0_debug\sharpmake.generators</IntermediateOutputPath>
+    <OutputPath>..\bin\Debug</OutputPath>
+    <IntermediateOutputPath>..\tmp\obj\netcore3_0_Debug\Sharpmake.Generators</IntermediateOutputPath>
     <DocumentationFile>..\bin\Debug\Sharpmake.Generators.xml</DocumentationFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
@@ -32,8 +32,8 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\release</OutputPath>
-    <IntermediateOutputPath>..\tmp\obj\netcore3_0_release\sharpmake.generators</IntermediateOutputPath>
+    <OutputPath>..\bin\Release</OutputPath>
+    <IntermediateOutputPath>..\tmp\obj\netcore3_0_Release\Sharpmake.Generators</IntermediateOutputPath>
     <DocumentationFile>..\bin\Release\Sharpmake.Generators.xml</DocumentationFile>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
