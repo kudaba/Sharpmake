@@ -23,7 +23,7 @@ namespace Sharpmake
     {
         public static bool IsPC(this Platform platform)
         {
-            return platform == Platform.win32 || platform == Platform.win64;
+            return platform == Platform.win32 || platform == Platform.win64 || platform == Platform.mac || platform == Platform.linux;
         }
 
         public static bool IsMicrosoft(this Platform platform)

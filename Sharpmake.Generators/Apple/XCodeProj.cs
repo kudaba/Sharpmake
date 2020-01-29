@@ -717,7 +717,7 @@ namespace Sharpmake.Generators.Apple
             options["RemoveSpecificDeviceLibraryPaths"] = "";
             options["RemoveSpecificSimulatorLibraryPaths"] = "";
             if (conf.Platform == Platform.mac)
-                options["SDKRoot"] = "macosx10.5";
+                options["SDKRoot"] = "macos";
             else
                 options["SDKRoot"] = "iphoneos";
             options["SpecificLibraryPaths"] = RemoveLineTag;
