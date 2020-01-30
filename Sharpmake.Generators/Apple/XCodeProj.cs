@@ -248,6 +248,10 @@ namespace Sharpmake.Generators.Apple
                 {
                     foreach (Project.Configuration dependentConfiguration in conf.ResolvedDependencies)
                     {
+                        bool isExport = dependentConfiguration.Project.GetType().IsDefined(typeof(Export), false);
+                        if (isExport)
+                            continue;
+
                         ProjectReference projectReference = new ProjectReference(dependentConfiguration.ProjectFullFileNameWithExtension);
                         _projectItems.Add(projectReference);
                         if (!_projectsFolder.Children.Contains(projectReference))
@@ -1009,14 +1013,17 @@ namespace Sharpmake.Generators.Apple
             OrderableStrings includePaths = conf.IncludePaths;
             includePaths.AddRange(conf.DependenciesIncludePaths);
             options["IncludePaths"] = includePaths.JoinStrings(",\n", "\t\t\t\t\t\"", "\"").TrimEnd('\n');
-            if (conf.LibraryPaths.Count == 0)
+
+            OrderableStrings libraryPaths = conf.LibraryPaths;
+            libraryPaths.AddRange(conf.DependenciesOtherLibraryPaths);
+            if (libraryPaths.Count == 0)
             {
                 options["LibraryPaths"] = RemoveLineTag;
                 options["RemoveLibraryPaths"] = RemoveLineTag;
             }
             else
             {
-                options["LibraryPaths"] = conf.LibraryPaths.JoinStrings(",\n", "\t\t\t\t\t\"", "\"").TrimEnd('\n');
+                options["LibraryPaths"] = libraryPaths.JoinStrings(",\n", "\t\t\t\t\t\"", "\"").TrimEnd('\n');
             }
 
             Strings specificDeviceLibraryPaths = Options.GetStrings<Options.XCode.Compiler.SpecificDeviceLibraryPaths>(conf);
@@ -1049,6 +1056,7 @@ namespace Sharpmake.Generators.Apple
             Strings linkerOptions = new Strings(conf.AdditionalLinkerOptions);
             linkerOptions.Add("-ObjC");
             linkerOptions.AddRange(conf.LibraryFiles.Select(library => "-l" + library));
+            linkerOptions.AddRange(conf.DependenciesOtherLibraryFiles.Select(library => "-l" + library));
 
             if (conf.DefaultOption == Options.DefaultTarget.Debug)
                 conf.Defines.Add("_DEBUG");
