@@ -263,6 +263,7 @@ namespace Sharpmake.Generators.Apple
 				PROVISIONING_PROFILE = ""[item.Options.ProvisioningProfile]"";
 				VALID_ARCHS = ""[item.Options.ValidArchs]"";
 				SKIP_INSTALL = [item.Options.SkipInstall];
+				STRIP_INSTALLED_PRODUCT = [item.Options.StripLinkedProduct];
 			};
 			name = [item.Optimization];
 		};

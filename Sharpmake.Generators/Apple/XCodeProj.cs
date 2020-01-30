@@ -988,6 +988,11 @@ namespace Sharpmake.Generators.Apple
             );
 
             Options.SelectOption(conf,
+                Options.Option(Options.XCode.Compiler.StripLinkedProduct.Disable, () => options["StripLinkedProduct"] = "NO"),
+                Options.Option(Options.XCode.Compiler.StripLinkedProduct.Enable, () => options["StripLinkedProduct"] = "YES")
+            );
+
+            Options.SelectOption(conf,
                 Options.Option(Options.XCode.Compiler.TreatWarningsAsErrors.Disable, () => options["TreatWarningsAsErrors"] = "NO"),
                 Options.Option(Options.XCode.Compiler.TreatWarningsAsErrors.Enable, () => options["TreatWarningsAsErrors"] = "YES")
             );

@@ -321,6 +321,13 @@ namespace Sharpmake
                     Disable
                 }
 
+                public enum StripLinkedProduct
+                {
+                    [Default]
+                    Enable,
+                    Disable
+                }
+
                 public class TargetedDeviceFamily
                 {
                     public string Value;
