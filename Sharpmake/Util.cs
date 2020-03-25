@@ -74,7 +74,7 @@ namespace Sharpmake
 
         public static string PathMakeStandard(string path)
         {
-            return PathMakeStandard(path, !Util.IsRunningInMono() && !Util.IsRunningOnUnix());
+            return PathMakeStandard(path, AllowForceLower && !IsRunningInMono() && !IsRunningOnUnix());
         }
 
         private static string GetTextTemplateDirectiveParam(string[] templateText, string directive, string paramName)
@@ -2190,5 +2190,9 @@ namespace Sharpmake
         private static readonly string s_framework = Assembly.GetEntryAssembly()?.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName;
         private static readonly bool s_isDotNetCore = s_framework != null && !s_framework.StartsWith(".NETFramework");
         public static bool IsRunningDotNetCore() => s_isDotNetCore;
+
+        // Global configuration for whether to allow paths to be forced lower case or not. This is already false for
+        // Unix and mono builds, so it's only true to keep old behavior.
+        public static bool AllowForceLower = true;
     }
 }
