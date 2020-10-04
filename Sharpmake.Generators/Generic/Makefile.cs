@@ -561,6 +561,10 @@ namespace Sharpmake.Generators.Generic
             {
                 options["LinkCommand"] = Template.Project.LinkCommandLib;
             }
+            else if (conf.Output == Project.Configuration.OutputType.Dll)
+            {
+                options["LinkCommand"] = Template.Project.LinkCommandDll;
+            }
             else
             {
                 options["LinkCommand"] = Template.Project.LinkCommandExe;

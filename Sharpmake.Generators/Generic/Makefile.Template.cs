@@ -116,6 +116,8 @@ endif
 ";
                 public static string LinkCommandLib = "$(AR) -rcs $(TARGET) $(OBJECTS)";
 
+                public static string LinkCommandDll = "$(CXX) -shared -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(LDLIBS)";
+
                 public static string LinkCommandExe = "$(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(LDLIBS)";
 
                 public static string ObjectsVariableBegin = "ifeq ($(config),[name])\n";
