@@ -259,7 +259,7 @@ namespace Sharpmake.Generators.VisualStudio
             _rootSolutionFolders.Clear();
             _solutionFolders.Clear();
 
-            FileInfo solutionFileInfo = new FileInfo(Util.GetCapitalizedPath(solutionPath + Path.DirectorySeparatorChar + solutionFile + SolutionExtension));
+            FileInfo solutionFileInfo = new FileInfo(Util.PathMakeStandard(solutionPath + Path.DirectorySeparatorChar + solutionFile + SolutionExtension));
 
             string solutionGuid = Util.BuildGuid(solutionFileInfo.FullName, solution.SharpmakeCsPath);
 

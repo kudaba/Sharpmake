@@ -189,7 +189,7 @@ namespace Sharpmake
                             Project = includedProjectInfo.Project,
                             TargetDefault = includedProjectInfo.Target,
                             OriginalProjectFile = includedProjectInfo.Configuration.ProjectFullFileName,
-                            ProjectFile = Util.GetCapitalizedPath(includedProjectInfo.Configuration.ProjectFullFileNameWithExtension),
+                            ProjectFile = Util.PathMakeStandard(includedProjectInfo.Configuration.ProjectFullFileNameWithExtension),
                             ProjectName = includedProjectInfo.Configuration.ProjectName,
                             SolutionFolder = includedProjectInfo.SolutionFolder,
                             SolutionFolderOverride = includedProjectInfo.SolutionFolder

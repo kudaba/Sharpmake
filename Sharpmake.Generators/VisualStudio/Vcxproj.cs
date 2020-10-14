@@ -119,8 +119,8 @@ namespace Sharpmake.Generators.VisualStudio
                 ProjectFileName = Path.GetFileName(ProjectPath);
                 Project = project;
 
-                ProjectDirectoryCapitalized = Util.GetCapitalizedPath(ProjectDirectory);
-                ProjectSourceCapitalized = Util.GetCapitalizedPath(Project.SourceRootPath);
+                ProjectDirectoryCapitalized = Util.PathMakeStandard(ProjectDirectory);
+                ProjectSourceCapitalized = Util.PathMakeStandard(Project.SourceRootPath);
 
                 ProjectConfigurations = VsUtil.SortConfigurations(projectConfigurations, Path.Combine(ProjectDirectoryCapitalized, ProjectFileName + ProjectExtension)).ToArray();
                 DevelopmentEnvironmentsRange = new DevEnvRange(ProjectConfigurations);
@@ -982,7 +982,7 @@ namespace Sharpmake.Generators.VisualStudio
                 {
                     foreach (var projectFileName in projectReferencesByPathConfig.ProjectReferencesByPath)
                     {
-                        string projectFullFileNameWithExtension = Util.GetCapitalizedPath(projectFileName);
+                        string projectFullFileNameWithExtension = Util.PathMakeStandard(projectFileName);
                         string relativeToProjectFile = Util.PathGetRelative(context.ProjectDirectoryCapitalized, projectFullFileNameWithExtension);
                         string projectGuid = Sln.ReadGuidFromProjectFile(projectFileName);
 

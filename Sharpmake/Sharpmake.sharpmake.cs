@@ -20,6 +20,8 @@ namespace SharpmakeGen
         public override void ConfigureAll(Configuration conf, Target target)
         {
             base.ConfigureAll(conf, target);
+            conf.ProjectPath = @"[project.SourceRootPath]";
+
             conf.ReferencesByNameExternal.Add("Microsoft.Build.Utilities.Core");
 
             conf.Options.Add(Options.CSharp.AllowUnsafeBlocks.Enabled);

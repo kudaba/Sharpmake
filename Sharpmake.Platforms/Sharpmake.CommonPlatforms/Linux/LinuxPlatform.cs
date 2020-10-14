@@ -446,7 +446,7 @@ namespace Sharpmake
                     if (!fastBuildSettings.BinPath.TryGetValue(devEnv, out binPath))
                         binPath = ClangForWindows.GetWindowsClangExecutablePath();
 
-                    string pathToCompiler = Util.GetCapitalizedPath(Util.PathGetAbsolute(projectRootPath, binPath));
+                    string pathToCompiler = Util.PathMakeStandard(Util.PathGetAbsolute(projectRootPath, binPath));
 
                     Strings extraFiles = new Strings();
                     {
@@ -495,7 +495,7 @@ namespace Sharpmake
                             Platform.linux,
                             compiler: compilerName,
                             binPath: binPath,
-                            linkerPath: Util.GetCapitalizedPath(Util.PathGetAbsolute(projectRootPath, linkerPath)),
+                            linkerPath: Util.PathMakeStandard(Util.PathGetAbsolute(projectRootPath, linkerPath)),
                             librarian: @"$LinkerPath$\" + librarianExe,
                             linker: @"$LinkerPath$\" + linkerExe,
                             fastBuildLinkerType: CompilerSettings.LinkerType.GCC // Workaround: set GCC linker type since it will only enable response files

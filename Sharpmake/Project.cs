@@ -866,7 +866,7 @@ namespace Sharpmake
             // Only scan directory for files if needed
             if (SourceFilesExtensions.Count != 0 || ResourceFilesExtensions.Count != 0 || PRIFilesExtensions.Count != 0 || NoneExtensions.Count != 0 || NoneExtensionsCopyIfNewer.Count != 0)
             {
-                string capitalizedSourceRootPath = Util.GetCapitalizedPath(SourceRootPath);
+                string capitalizedSourceRootPath = SourceRootPath;
 
                 // Query all files in source directory
                 DirectoryInfo sourceRootPathInfo = new DirectoryInfo(capitalizedSourceRootPath);
@@ -883,7 +883,7 @@ namespace Sharpmake
                 // Additional source directories if any
                 foreach (var additionalSourceRootPath in AdditionalSourceRootPaths)
                 {
-                    string capitalizedAdditionalSourceRootPath = Util.GetCapitalizedPath(additionalSourceRootPath);
+                    string capitalizedAdditionalSourceRootPath = Util.PathMakeStandard(additionalSourceRootPath);
                     DirectoryInfo additionalSourceRootPathInfo = new DirectoryInfo(capitalizedAdditionalSourceRootPath);
                     Strings additionalFiles = new Strings(GetDirectoryFiles(additionalSourceRootPathInfo));
                     AddMatchExtensionFiles(additionalFiles, ref SourceFiles, SourceFilesExtensions);
@@ -1310,7 +1310,7 @@ namespace Sharpmake
 
             foreach (string sourceFileFullPath in sourceFiles)
             {
-                string sourceFile = BlobFixCasing ? Util.GetCapitalizedPath(sourceFileFullPath) : sourceFileFullPath;
+                string sourceFile = BlobFixCasing ? Util.PathMakeStandard(sourceFileFullPath) : sourceFileFullPath;
                 string sourceFileRelative = Util.PathGetRelative(blobFileInfo.Directory.FullName, sourceFile).Replace(Util.WindowsSeparator, Util.UnixSeparator);
 
                 // Visual Studio will append the relative include path to the blob file path and will not resolve it before it is searching
@@ -1626,9 +1626,9 @@ namespace Sharpmake
             }
             else if (Util.GetStackSourceFileTopMostTypeOf(GetType(), out file))
             {
-                FileInfo fileInfo = new FileInfo(file);
-                SharpmakeCsFileName = Util.PathMakeStandard(fileInfo.FullName);
-                SharpmakeCsPath = Util.PathMakeStandard(fileInfo.DirectoryName);
+                FileInfo fileInfo = new FileInfo(Util.PathMakeStandard(file));
+                SharpmakeCsFileName = fileInfo.FullName;
+                SharpmakeCsPath = fileInfo.DirectoryName;
             }
             else
             {
@@ -1643,7 +1643,7 @@ namespace Sharpmake
         {
         }
 
-        public void AfterConfigure()
+        public virtual void AfterConfigure()
         {
             foreach (Project.Configuration conf in Configurations)
             {
@@ -1876,7 +1876,7 @@ namespace Sharpmake
         internal static List<string> GetDirectoryFiles(DirectoryInfo directoryInfo)
         {
             string directoryCapitalizedFullName = directoryInfo.FullName;
-            directoryCapitalizedFullName = Util.GetCapitalizedPath(directoryCapitalizedFullName);
+            directoryCapitalizedFullName = Util.PathMakeStandard(directoryCapitalizedFullName);
             List<string> files;
             if (!s_cachedDirectoryFiles.TryGetValue(directoryCapitalizedFullName, out files))
             {
@@ -1918,7 +1918,7 @@ namespace Sharpmake
             string capitalizedFile;
             if (!s_capitalizedMapFiles.TryGetValue(filenameLC, out capitalizedFile))
             {
-                capitalizedFile = Util.GetCapitalizedPath(file);
+                capitalizedFile = Util.PathMakeStandard(file);
                 s_capitalizedMapFiles.TryAdd(filenameLC, capitalizedFile);
             }
             return capitalizedFile;

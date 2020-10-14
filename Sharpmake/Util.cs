@@ -78,7 +78,9 @@ namespace Sharpmake
 
         public static string PathMakeStandard(string path)
         {
-            return PathMakeStandard(path, !Util.IsRunningInMono());
+            // cleanup the path by replacing the other separator by the correct one for this OS
+            // then trim every trailing separators
+            return path.Replace(OtherSeparator, Path.DirectorySeparatorChar).TrimEnd(Path.DirectorySeparatorChar);
         }
 
         /// <summary>
@@ -106,12 +108,10 @@ namespace Sharpmake
             return null;
         }
 
+        [Obsolete("Making a path standard doesn't allow forcing to lower argument anymore", true)]
         public static string PathMakeStandard(string path, bool forceToLower)
         {
-            // cleanup the path by replacing the other separator by the correct one for this OS
-            // then trim every trailing separators
-            var standardPath = path.Replace(OtherSeparator, Path.DirectorySeparatorChar).TrimEnd(Path.DirectorySeparatorChar);
-            return forceToLower ? standardPath.ToLower() : standardPath;
+            return null;
         }
 
         public static string EnsureTrailingSeparator(string path)
@@ -579,11 +579,6 @@ namespace Sharpmake
             paths = paths.Select(path => ResolvePath(root, path));
         }
 
-        internal static void ResolvePathAndFixCase(string root, ref IEnumerable<string> paths)
-        {
-            paths = paths.Select(path => ResolvePathAndFixCase(root, path));
-        }
-
         public static void ResolvePath(string root, ref Strings paths)
         {
             List<string> sortedPaths = paths.Values;
@@ -591,16 +586,6 @@ namespace Sharpmake
             {
                 string resolvedPath = ResolvePath(root, path);
                 paths.UpdateValue(path, resolvedPath);
-            }
-        }
-
-        internal static void ResolvePathAndFixCase(string root, ref Strings paths)
-        {
-            List<string> sortedPaths = paths.Values;
-            foreach (string path in sortedPaths)
-            {
-                string fixedCase = ResolvePathAndFixCase(root, path);
-                paths.UpdateValue(path, fixedCase);
             }
         }
 
@@ -614,36 +599,26 @@ namespace Sharpmake
             paths.Sort();
         }
 
-        internal static void ResolvePathAndFixCase(string root, ref OrderableStrings paths)
-        {
-            for (int i = 0; i < paths.Count; ++i)
-            {
-                string fixedCase = ResolvePathAndFixCase(root, paths[i]);
-                i = paths.SetOrRemoveAtIndex(i, fixedCase);
-            }
-            paths.Sort();
-        }
-
         public static void ResolvePath(string root, ref string path)
         {
             path = ResolvePath(root, path);
         }
 
-        internal static void ResolvePathAndFixCase(string root, ref string path)
-        {
-            path = ResolvePathAndFixCase(root, path);
-        }
+        // internal static void ResolvePathAndFixCase(string root, ref string path)
+        // {
+        //     path = ResolvePathAndFixCase(root, path);
+        // }
 
         public static string ResolvePath(string root, string path)
         {
             return Util.PathGetAbsolute(root, Util.PathMakeStandard(path));
         }
 
-        internal static string ResolvePathAndFixCase(string root, string path)
-        {
-            string resolvedPath = ResolvePath(root, path);
-            return GetProperFilePathCapitalization(resolvedPath);
-        }
+        // internal static string ResolvePathAndFixCase(string root, string path)
+        // {
+        //     string resolvedPath = ResolvePath(root, path);
+        //     return GetProperFilePathCapitalization(resolvedPath);
+        // }
 
 
         /// <summary>
@@ -674,125 +649,125 @@ namespace Sharpmake
             return builder.ToString();
         }
 
-        private static string GetProperFilePathCapitalization(string filename)
-        {
-            StringBuilder builder = new StringBuilder();
-            FileInfo fileInfo = new FileInfo(filename);
-            DirectoryInfo dirInfo = fileInfo.Directory;
-            GetProperDirectoryCapitalization(dirInfo, null, ref builder);
-            string properFileName = fileInfo.Name;
-            if (dirInfo != null && dirInfo.Exists)
-            {
-                foreach (var fsInfo in dirInfo.EnumerateFileSystemInfos())
-                {
-                    if (((fsInfo.Attributes & FileAttributes.Directory) != FileAttributes.Directory)
-                        && string.Compare(fsInfo.Name, fileInfo.Name, StringComparison.OrdinalIgnoreCase) == 0)
-                    {
-                        properFileName = fsInfo.Name;
-                        break;
-                    }
-                }
-            }
-            return Path.Combine(builder.ToString(), properFileName);
-        }
+        // private static string GetProperFilePathCapitalization(string filename)
+        // {
+        //     StringBuilder builder = new StringBuilder();
+        //     FileInfo fileInfo = new FileInfo(filename);
+        //     DirectoryInfo dirInfo = fileInfo.Directory;
+        //     GetProperDirectoryCapitalization(dirInfo, null, ref builder);
+        //     string properFileName = fileInfo.Name;
+        //     if (dirInfo != null && dirInfo.Exists)
+        //     {
+        //         foreach (var fsInfo in dirInfo.EnumerateFileSystemInfos())
+        //         {
+        //             if (((fsInfo.Attributes & FileAttributes.Directory) != FileAttributes.Directory)
+        //                 && string.Compare(fsInfo.Name, fileInfo.Name, StringComparison.OrdinalIgnoreCase) == 0)
+        //             {
+        //                 properFileName = fsInfo.Name;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        //     return Path.Combine(builder.ToString(), properFileName);
+        // }
 
-        private static ConcurrentDictionary<string, string> s_capitalizedPaths = new ConcurrentDictionary<string, string>();
+        // private static ConcurrentDictionary<string, string> s_capitalizedPaths = new ConcurrentDictionary<string, string>();
 
-        private static void GetProperDirectoryCapitalization(DirectoryInfo dirInfo, DirectoryInfo childInfo, ref StringBuilder pathBuilder)
-        {
-            string lowerPath = dirInfo.FullName.ToLower();
-            string capitalizedPath;
-            if (s_capitalizedPaths.TryGetValue(lowerPath, out capitalizedPath))
-            {
-                pathBuilder.Append(capitalizedPath);
-            }
-            else
-            {
-                if (dirInfo.Parent != null)
-                {
-                    GetProperDirectoryCapitalization(dirInfo.Parent, dirInfo, ref pathBuilder);
-                }
-                else
-                {
-                    // Make root drive always uppercase
-                    pathBuilder.Append(dirInfo.Name.ToUpper());
-                }
-            }
-            s_capitalizedPaths.TryAdd(lowerPath, pathBuilder.ToString());
+        // private static void GetProperDirectoryCapitalization(DirectoryInfo dirInfo, DirectoryInfo childInfo, ref StringBuilder pathBuilder)
+        // {
+        //     string lowerPath = dirInfo.FullName.ToLowerInvariant();
+        //     string capitalizedPath;
+        //     if (s_capitalizedPaths.TryGetValue(lowerPath, out capitalizedPath))
+        //     {
+        //         pathBuilder.Append(capitalizedPath);
+        //     }
+        //     else
+        //     {
+        //         if (dirInfo.Parent != null)
+        //         {
+        //             GetProperDirectoryCapitalization(dirInfo.Parent, dirInfo, ref pathBuilder);
+        //         }
+        //         else
+        //         {
+        //             // Make root drive always uppercase
+        //             pathBuilder.Append(dirInfo.Name.ToUpper());
+        //         }
+        //     }
+        //     s_capitalizedPaths.TryAdd(lowerPath, pathBuilder.ToString());
 
-            if (childInfo != null)
-            {
-                // Note: Avoid double directory separator when at the root.
-                if (dirInfo.Parent != null)
-                    pathBuilder.Append(Path.DirectorySeparatorChar);
-                bool appendChild = true;
-                if (dirInfo.Exists)
-                {
-                    var resultDirs = dirInfo.GetDirectories(childInfo.Name, SearchOption.TopDirectoryOnly);
-                    if (resultDirs.Length > 0)
-                    {
-                        pathBuilder.Append(resultDirs[0].Name);
-                        appendChild = false;
-                    }
-                    else
-                    {
-                        foreach (var fsInfo in dirInfo.EnumerateFileSystemInfos())
-                        {
-                            if (string.Compare(fsInfo.Name, childInfo.Name, StringComparison.OrdinalIgnoreCase) == 0)
-                            {
-                                pathBuilder.Append(fsInfo.Name);
-                                appendChild = false;
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (appendChild)
-                    pathBuilder.Append(childInfo.Name);
-            }
-        }
+        //     if (childInfo != null)
+        //     {
+        //         // Note: Avoid double directory separator when at the root.
+        //         if (dirInfo.Parent != null)
+        //             pathBuilder.Append(Path.DirectorySeparatorChar);
+        //         bool appendChild = true;
+        //         if (dirInfo.Exists)
+        //         {
+        //             var resultDirs = dirInfo.GetDirectories(childInfo.Name, SearchOption.TopDirectoryOnly);
+        //             if (resultDirs.Length > 0)
+        //             {
+        //                 pathBuilder.Append(resultDirs[0].Name);
+        //                 appendChild = false;
+        //             }
+        //             else
+        //             {
+        //                 foreach (var fsInfo in dirInfo.EnumerateFileSystemInfos())
+        //                 {
+        //                     if (string.Compare(fsInfo.Name, childInfo.Name, StringComparison.OrdinalIgnoreCase) == 0)
+        //                     {
+        //                         pathBuilder.Append(fsInfo.Name);
+        //                         appendChild = false;
+        //                         break;
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //         if (appendChild)
+        //             pathBuilder.Append(childInfo.Name);
+        //     }
+        // }
 
-        public static OrderableStrings PathGetCapitalized(OrderableStrings fullPaths)
-        {
-            OrderableStrings result = new OrderableStrings(fullPaths);
+        // public static OrderableStrings PathGetCapitalized(OrderableStrings fullPaths)
+        // {
+        //     OrderableStrings result = new OrderableStrings(fullPaths);
 
-            for (int i = 0; i < result.Count; ++i)
-            {
-                result[i] = GetCapitalizedPath(result[i]);
-            }
-            return result;
-        }
+        //     for (int i = 0; i < result.Count; ++i)
+        //     {
+        //         result[i] = PathMakeStandard(result[i]);
+        //     }
+        //     return result;
+        // }
 
-        public static string GetCapitalizedPath(string path)
-        {
-            if (CountFakeFiles() > 0)
-                return path;
+        // public static string PathMakeStandard(string path)
+        // {
+        //     if (CountFakeFiles() > 0)
+        //         return path;
 
-            // Don't touch paths starting with ..
-            if (path.StartsWith("..", StringComparison.Ordinal))
-                return path;
-            string pathLC = path.ToLower();
-            string capitalizedPath;
-            if (s_capitalizedPaths.TryGetValue(pathLC, out capitalizedPath))
-            {
-                return capitalizedPath;
-            }
+        //     // Don't touch paths starting with ..
+        //     if (path.StartsWith("..", StringComparison.Ordinal))
+        //         return path;
+        //     string pathLC = path.ToLower();
+        //     string capitalizedPath;
+        //     if (s_capitalizedPaths.TryGetValue(pathLC, out capitalizedPath))
+        //     {
+        //         return capitalizedPath;
+        //     }
 
-            if (File.Exists(path))
-            {
-                capitalizedPath = GetProperFilePathCapitalization(path);
-            }
-            else
-            {
-                StringBuilder pathBuilder = new StringBuilder();
-                DirectoryInfo dirInfo = new DirectoryInfo(path);
-                GetProperDirectoryCapitalization(dirInfo, null, ref pathBuilder);
+        //     if (File.Exists(path))
+        //     {
+        //         capitalizedPath = GetProperFilePathCapitalization(path);
+        //     }
+        //     else
+        //     {
+        //         StringBuilder pathBuilder = new StringBuilder();
+        //         DirectoryInfo dirInfo = new DirectoryInfo(path);
+        //         GetProperDirectoryCapitalization(dirInfo, null, ref pathBuilder);
 
-                capitalizedPath = pathBuilder.ToString();
-            }
-            s_capitalizedPaths.TryAdd(pathLC, capitalizedPath);
-            return capitalizedPath;
-        }
+        //         capitalizedPath = pathBuilder.ToString();
+        //     }
+        //     s_capitalizedPaths.TryAdd(pathLC, capitalizedPath);
+        //     return capitalizedPath;
+        // }
 
         [System.Runtime.InteropServices.DllImport("msvcrt.dll", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl)]
         private static extern int memcmp(byte[] b1, byte[] b2, long count);
@@ -2304,9 +2279,9 @@ namespace Sharpmake
         public static string ReplaceHeadPath(this string fullInputPath, string inputHeadPath, string replacementHeadPath)
         {
             // Normalize paths before comparing and combining them, to prevent false mismatch between '\\' and '/'.
-            fullInputPath = Util.PathMakeStandard(fullInputPath, false);
-            inputHeadPath = Util.PathMakeStandard(inputHeadPath, false);
-            replacementHeadPath = Util.PathMakeStandard(replacementHeadPath, false);
+            fullInputPath = Util.PathMakeStandard(fullInputPath);
+            inputHeadPath = Util.PathMakeStandard(inputHeadPath);
+            replacementHeadPath = Util.PathMakeStandard(replacementHeadPath);
 
             inputHeadPath = EnsureTrailingSeparator(inputHeadPath);
 

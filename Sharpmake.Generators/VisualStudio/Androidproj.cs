@@ -82,8 +82,8 @@ namespace Sharpmake.Generators.VisualStudio
                 Project = project;
                 AndroidPackageProject = (AndroidPackageProject)Project;
 
-                ProjectDirectoryCapitalized = Util.GetCapitalizedPath(ProjectDirectory);
-                ProjectSourceCapitalized = Util.GetCapitalizedPath(Project.SourceRootPath);
+                ProjectDirectoryCapitalized = Util.PathMakeStandard(ProjectDirectory);
+                ProjectSourceCapitalized = Util.PathMakeStandard(Project.SourceRootPath);
 
                 ProjectConfigurations = VsUtil.SortConfigurations(projectConfigurations, Path.Combine(ProjectDirectoryCapitalized, ProjectFileName + ProjectExtension)).ToArray();
                 DevelopmentEnvironmentsRange = new DevEnvRange(ProjectConfigurations);

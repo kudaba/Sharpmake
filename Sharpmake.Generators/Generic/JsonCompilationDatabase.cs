@@ -459,8 +459,8 @@ namespace Sharpmake.Generators.JsonCompilationDatabase
             Builder = builder;
             Project = project;
             ProjectDirectory = config.ProjectPath;
-            ProjectDirectoryCapitalized = Util.GetCapitalizedPath(ProjectDirectory);
-            ProjectSourceCapitalized = Util.GetCapitalizedPath(project.SourceRootPath);
+            ProjectDirectoryCapitalized = Util.PathMakeStandard(ProjectDirectory);
+            ProjectSourceCapitalized = Util.PathMakeStandard(project.SourceRootPath);
             Configuration = config;
             Options = new Options.ExplicitOptions();
             CommandLineOptions = new Dictionary<string, string>();

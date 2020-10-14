@@ -109,7 +109,7 @@ namespace Sharpmake.Generators.Generic
             string solutionFile,
             out bool updated)
         {
-            FileInfo solutionFileInfo = new FileInfo(Util.GetCapitalizedPath(solutionPath + Path.DirectorySeparatorChar + solutionFile + MakeExtension));
+            FileInfo solutionFileInfo = new FileInfo(Util.PathMakeStandard(solutionPath + Path.DirectorySeparatorChar + solutionFile + MakeExtension));
             bool projectsWereFiltered = false;
             List<Solution.ResolvedProject> solutionProjects = solution.GetResolvedProjects(configurations, out projectsWereFiltered).ToList();
             solutionProjects.Sort((a, b) => string.Compare(a.ProjectName, b.ProjectName)); // Ensure all projects are always in the same order to avoid random shuffles
@@ -239,7 +239,7 @@ namespace Sharpmake.Generators.Generic
             List<string> generatedFiles,
             List<string> skipFiles)
         {
-            var projectFileInfo = new FileInfo(Util.GetCapitalizedPath(projectFile + MakeExtension));
+            var projectFileInfo = new FileInfo(Util.PathMakeStandard(projectFile + MakeExtension));
 
             ValidateProjectConfigurations(project, configurations, projectFileInfo);
 
@@ -419,9 +419,9 @@ namespace Sharpmake.Generators.Generic
 
             // Includes
             OrderableStrings includePaths = new OrderableStrings();
-            includePaths.AddRange(Util.PathGetRelative(projectFileInfo.DirectoryName, Util.PathGetCapitalized(conf.IncludePrivatePaths)));
-            includePaths.AddRange(Util.PathGetRelative(projectFileInfo.DirectoryName, Util.PathGetCapitalized(conf.IncludePaths)));
-            includePaths.AddRange(Util.PathGetRelative(projectFileInfo.DirectoryName, Util.PathGetCapitalized(conf.DependenciesIncludePaths)));
+            includePaths.AddRange(Util.PathGetRelative(projectFileInfo.DirectoryName, conf.IncludePrivatePaths));
+            includePaths.AddRange(Util.PathGetRelative(projectFileInfo.DirectoryName, conf.IncludePaths));
+            includePaths.AddRange(Util.PathGetRelative(projectFileInfo.DirectoryName, conf.DependenciesIncludePaths));
             PathMakeUnix(includePaths);
             includePaths.InsertPrefix("-I");
             options["Includes"] = includePaths.JoinStrings(" ");
@@ -616,7 +616,7 @@ cflags.Append("-fPIC ");
                     fileNamesOccurences.Add(fileName, fileNameOccurences);
                 }
 
-                ProjectFile projectFile = new ProjectFile(file, projectFileInfo.DirectoryName, Util.GetCapitalizedPath(project.SourceRootPath), fileNameOccurences);
+                ProjectFile projectFile = new ProjectFile(file, projectFileInfo.DirectoryName, Util.PathMakeStandard(project.SourceRootPath), fileNameOccurences);
                 allFiles.Add(projectFile);
             }
 

@@ -44,7 +44,7 @@ namespace Sharpmake.Generators.Generic
 
         public string GenerateProject(Project project, List<Project.Configuration> configurations, string projectPath, string projectFileName, out bool updated)
         {
-            string projectDirectory = Util.GetCapitalizedPath(projectPath);
+            string projectDirectory = Util.PathMakeStandard(projectPath);
             Directory.CreateDirectory(projectDirectory);
 
             string fileFullPath = projectDirectory + Path.DirectorySeparatorChar + projectFileName + _makefileExtension;

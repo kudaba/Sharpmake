@@ -370,9 +370,9 @@ namespace Sharpmake
                     configName,
                     new CompilerSettings.Configuration(
                         Platform.win64,
-                        binPath: Util.GetCapitalizedPath(Util.PathGetAbsolute(projectRootPath, binPath)),
-                        linkerPath: Util.GetCapitalizedPath(Util.PathGetAbsolute(projectRootPath, linkerPath)),
-                        resourceCompiler: Util.GetCapitalizedPath(Util.PathGetAbsolute(projectRootPath, resCompiler)),
+                        binPath: Util.PathMakeStandard(Util.PathGetAbsolute(projectRootPath, binPath)),
+                        linkerPath: Util.PathMakeStandard(Util.PathGetAbsolute(projectRootPath, linkerPath)),
+                        resourceCompiler: Util.PathMakeStandard(Util.PathGetAbsolute(projectRootPath, resCompiler)),
                         librarian: Path.Combine(@"$LinkerPath$", librarianExe),
                         linker: Path.Combine(@"$LinkerPath$", linkerExe)
                     )

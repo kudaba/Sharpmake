@@ -83,7 +83,7 @@ namespace Sharpmake
                 if (matchType == IncludeType.Relative)
                 {
                     if (!Util.FileExists(includeAbsolutePath))
-                        includeAbsolutePath = Util.GetCapitalizedPath(includeAbsolutePath);
+                        includeAbsolutePath = Util.PathMakeStandard(includeAbsolutePath);
                 }
                 else
                 {
@@ -91,7 +91,7 @@ namespace Sharpmake
                     if (matchIncludeInParentPath == null)
                         throw new Error("\t" + sourceFilePath.FullName + "(" + lineNumber + "): error: Sharpmake.Include file not found '{0}'[{1}]. Search started from '{2}'", includeFilename, matchType, sourceFilePath.DirectoryName);
 
-                    includeAbsolutePath = Util.GetCapitalizedPath(matchIncludeInParentPath);
+                    includeAbsolutePath = Util.PathMakeStandard(matchIncludeInParentPath);
                 }
 
                 if (!Util.FileExists(includeAbsolutePath))
@@ -216,7 +216,7 @@ namespace Sharpmake
             else
             {
                 if (!Util.FileExists(includeAbsolutePath))
-                    includeAbsolutePath = Util.GetCapitalizedPath(includeAbsolutePath);
+                    includeAbsolutePath = Util.PathMakeStandard(includeAbsolutePath);
                 if (!Util.FileExists(includeAbsolutePath))
                     throw new Error("\t" + sourceFilePath.FullName + "(" + lineNumber + "): error: Sharpmake.Package file not found {0}", includeFilename);
 

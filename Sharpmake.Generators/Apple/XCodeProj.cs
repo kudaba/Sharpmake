@@ -68,8 +68,8 @@ namespace Sharpmake.Generators.Apple
 
                 ProjectDirectory = projectPath;
                 Project = project;
-                ProjectDirectoryCapitalized = Util.GetCapitalizedPath(ProjectDirectory);
-                ProjectSourceCapitalized = Util.GetCapitalizedPath(project.SourceRootPath);
+                ProjectDirectoryCapitalized = Util.PathMakeStandard(ProjectDirectory);
+                ProjectSourceCapitalized = Util.PathMakeStandard(project.SourceRootPath);
             }
         }
 
@@ -138,7 +138,7 @@ namespace Sharpmake.Generators.Apple
         )
         {
             // Create the target folder (solutions and projects are folders in XCode).
-            string projectFolder = Util.GetCapitalizedPath(Path.Combine(context.ProjectDirectoryCapitalized, projectFile + ProjectExtension));
+            string projectFolder = Util.PathMakeStandard(Path.Combine(context.ProjectDirectoryCapitalized, projectFile + ProjectExtension));
             Directory.CreateDirectory(projectFolder);
 
             string projectFilePath = Path.Combine(projectFolder, ProjectFileName);
@@ -161,7 +161,7 @@ namespace Sharpmake.Generators.Apple
         )
         {
             // Create the target folder (solutions and projects are folders in XCode).
-            string projectSchemeFolder = Util.GetCapitalizedPath(Path.Combine(context.ProjectDirectoryCapitalized, projectFile + ProjectExtension, "xcshareddata", "xcschemes"));
+            string projectSchemeFolder = Util.PathMakeStandard(Path.Combine(context.ProjectDirectoryCapitalized, projectFile + ProjectExtension, "xcshareddata", "xcschemes"));
             Directory.CreateDirectory(projectSchemeFolder);
 
             string projectSchemeFilePath = Path.Combine(projectSchemeFolder, projectFile + ProjectSchemeExtension);

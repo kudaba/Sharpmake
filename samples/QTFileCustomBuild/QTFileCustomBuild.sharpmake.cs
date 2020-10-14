@@ -303,7 +303,7 @@ namespace QTFileCustomBuild
                 conf.IncludePrivatePaths.Add(conf.ProjectPath);
 
                 // We need to exclude the generation files folder from the build on all targets except our own.
-                string rootFolderForRegex = Util.GetCapitalizedPath(conf.ProjectPath);
+                string rootFolderForRegex = Util.PathMakeStandard(conf.ProjectPath);
                 string outputRegex = Util.PathGetRelative(rootFolderForRegex, outputFolder);
                 outputRegex = outputRegex.Replace("..\\", "").Replace("\\", "\\\\") + @"\\";
                 foreach (ProjConfiguration confToExclude in project.Configurations)

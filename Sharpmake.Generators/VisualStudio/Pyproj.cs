@@ -100,7 +100,7 @@ namespace Sharpmake.Generators.VisualStudio
             // Need to sort by name and platform
             List<Project.Configuration> configurations = new List<Project.Configuration>();
             configurations.AddRange(unsortedConfigurations.OrderBy(conf => conf.Name + conf.Platform));
-            string sourceRootPath = project.IsSourceFilesCaseSensitive ? Util.GetCapitalizedPath(project.SourceRootPath) : project.SourceRootPath;
+            string sourceRootPath = project.IsSourceFilesCaseSensitive ? Util.PathMakeStandard(project.SourceRootPath) : project.SourceRootPath;
 
             Resolver resolver = new Resolver();
 
@@ -379,7 +379,7 @@ namespace Sharpmake.Generators.VisualStudio
 
         private string GetProperRelativePathToSourcePath(string path)
         {
-            return Util.PathGetRelative(_project.SourceRootPath, _project.IsSourceFilesCaseSensitive ? Util.GetCapitalizedPath(path) : path);
+            return Util.PathGetRelative(_project.SourceRootPath, _project.IsSourceFilesCaseSensitive ? Util.PathMakeStandard(path) : path);
         }
 
         private class ProjectDirectory

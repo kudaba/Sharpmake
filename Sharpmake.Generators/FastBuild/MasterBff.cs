@@ -251,7 +251,7 @@ namespace Sharpmake.Generators.FastBuild
         {
             configurationsPerBff.Sort();
 
-            string masterBffFilePath = Util.GetCapitalizedPath(configurationsPerBff.BffFilePathWithExtension);
+            string masterBffFilePath = Util.PathMakeStandard(configurationsPerBff.BffFilePathWithExtension);
             string masterBffDirectory = Path.GetDirectoryName(masterBffFilePath);
             string masterBffFileName = Path.GetFileName(masterBffFilePath);
 
@@ -578,7 +578,7 @@ namespace Sharpmake.Generators.FastBuild
                 }
 
                 if (resourceCompilerPaths.Count == 1)
-                    fastBuildPATH = Util.GetCapitalizedPath(resourceCompilerPaths.First());
+                    fastBuildPATH = Util.PathMakeStandard(resourceCompilerPaths.First());
                 else if (resourceCompilerPaths.Count > 1)
                     throw new Error("Multiple conflicting resource compilers found in PATH! Please verify your ResourceCompiler settings.");
             }
@@ -684,7 +684,7 @@ namespace Sharpmake.Generators.FastBuild
 
         private static void MergeBffIncludeTreeRecursive(Project.Configuration conf, ref Dictionary<string, Strings> bffIncludesDependencies)
         {
-            string currentBffFullPath = Util.GetCapitalizedPath(conf.BffFullFileName) + FastBuildSettings.FastBuildConfigFileExtension;
+            string currentBffFullPath = Util.PathMakeStandard(conf.BffFullFileName) + FastBuildSettings.FastBuildConfigFileExtension;
             Strings currentBffIncludes = bffIncludesDependencies.GetValueOrAdd(currentBffFullPath, new Strings());
             MergeBffIncludeTreeRecursive(conf, ref bffIncludesDependencies, new HashSet<Project.Configuration>());
         }
@@ -694,7 +694,7 @@ namespace Sharpmake.Generators.FastBuild
             ref Dictionary<string, Strings> bffIncludesDependencies,
             HashSet<Project.Configuration> visitedConfigurations)
         {
-            string currentBffFullPath = Util.GetCapitalizedPath(conf.BffFullFileName) + FastBuildSettings.FastBuildConfigFileExtension;
+            string currentBffFullPath = Util.PathMakeStandard(conf.BffFullFileName) + FastBuildSettings.FastBuildConfigFileExtension;
             foreach (Project.Configuration dependency in conf.ResolvedDependencies)
             {
                 if (dependency.Project.SharpmakeProjectType == Project.ProjectTypeAttribute.Export)
@@ -712,7 +712,7 @@ namespace Sharpmake.Generators.FastBuild
                 if (conf.Project.SourceFilesFilters != null && (conf.Project.SourceFilesFiltersCount == 0 || conf.Project.SkipProjectWhenFiltersActive))
                     continue; // Only keep used projects in filter mode. TODO: Make this cleaner.
 
-                string dependencyBffFullPath = Util.GetCapitalizedPath(dependency.BffFullFileName) + FastBuildSettings.FastBuildConfigFileExtension;
+                string dependencyBffFullPath = Util.PathMakeStandard(dependency.BffFullFileName) + FastBuildSettings.FastBuildConfigFileExtension;
                 Strings currentBffIncludes = bffIncludesDependencies.GetValueOrAdd(currentBffFullPath, new Strings());
                 currentBffIncludes.Add(dependencyBffFullPath);
             }

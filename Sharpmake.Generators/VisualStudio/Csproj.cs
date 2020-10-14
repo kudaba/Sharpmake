@@ -1103,7 +1103,7 @@ namespace Sharpmake.Generators.VisualStudio
             }
 
             _projectPath = projectPath;
-            _projectPathCapitalized = Util.GetCapitalizedPath(projectPath);
+            _projectPathCapitalized = Util.PathMakeStandard(projectPath);
             _projectConfigurationList = configurations;
 
             var memoryStream = new MemoryStream();
@@ -1333,7 +1333,7 @@ namespace Sharpmake.Generators.VisualStudio
                             continue;
 
                         string dependencyExtension = Util.GetProjectFileExtension(dependencyConfiguration);
-                        string projectFullFileNameWithExtension = Util.GetCapitalizedPath(dependencyConfiguration.ProjectFullFileName + dependencyExtension);
+                        string projectFullFileNameWithExtension = Util.PathMakeStandard(dependencyConfiguration.ProjectFullFileName + dependencyExtension);
                         string relativeToProjectFile = Util.PathGetRelative(_projectPathCapitalized,
                                                                             projectFullFileNameWithExtension);
 
@@ -1369,7 +1369,7 @@ namespace Sharpmake.Generators.VisualStudio
 
                 foreach (var projectFileName in conf.ProjectReferencesByPath)
                 {
-                    string projectFullFileNameWithExtension = Util.GetCapitalizedPath(projectFileName);
+                    string projectFullFileNameWithExtension = Util.PathMakeStandard(projectFileName);
                     string relativeToProjectFile = Util.PathGetRelative(_projectPathCapitalized,
                                                                         projectFullFileNameWithExtension);
                     string projectGuid = Sln.ReadGuidFromProjectFile(projectFileName);
@@ -2215,7 +2215,7 @@ namespace Sharpmake.Generators.VisualStudio
             foreach (var conf in configurations)
             {
                 var dotNetFramework = conf.Target.GetFragment<DotNetFramework>();
-                foreach (var str in conf.ReferencesByPath.Select(Util.GetCapitalizedPath))
+                foreach (var str in conf.ReferencesByPath.Select(Util.PathMakeStandard))
                 {
                     var referencesByPath = new ItemGroups.Reference
                     {
@@ -2227,7 +2227,7 @@ namespace Sharpmake.Generators.VisualStudio
                     itemGroups.AddReference(dotNetFramework, referencesByPath);
                 }
 
-                foreach (var str in project.AdditionalEmbeddedAssemblies.Select(Util.GetCapitalizedPath))
+                foreach (var str in project.AdditionalEmbeddedAssemblies.Select(Util.PathMakeStandard))
                 {
                     var referencesByPath = new ItemGroups.Reference
                     {

@@ -51,7 +51,7 @@ namespace Sharpmake.Generators.Generic
         private string GenerateApplicationMakefile(Solution solution, List<Solution.Configuration> configurations, string solutionPath, string solutionFile, out bool updated)
         {
             // Create the target folder.
-            string solutionFolder = Util.GetCapitalizedPath(solutionPath);
+            string solutionFolder = Util.PathMakeStandard(solutionPath);
             Directory.CreateDirectory(solutionFolder);
 
             // Main solution file. 
@@ -74,7 +74,7 @@ namespace Sharpmake.Generators.Generic
         private string GenerateProjectMainMakefile(Solution solution, List<Solution.Configuration> configurations, string solutionPath, string solutionFile, out bool updated)
         {
             // Create the target folder.
-            string solutionFolder = Util.GetCapitalizedPath(solutionPath);
+            string solutionFolder = Util.PathMakeStandard(solutionPath);
             Directory.CreateDirectory(solutionFolder);
 
             // Main solution file. 
