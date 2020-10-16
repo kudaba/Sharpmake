@@ -5,7 +5,7 @@ namespace SharpmakeGen
 {
     namespace FunctionalTests
     {
-        public abstract class FunctionalTestProject : Common.SharpmakeBaseProject
+        public abstract class FunctionalTestProject : Common.SharpmakeLibProject
         {
             public FunctionalTestProject()
                 : base(excludeSharpmakeFiles: false, generateXmlDoc: false)
@@ -17,8 +17,6 @@ namespace SharpmakeGen
                     @"\\projects\\",
                     @"\\reference\\"
                 );
-
-                AddTargets(Common.GetDefaultTargets());
             }
 
             public override void ConfigureAll(Configuration conf, Target target)
@@ -28,7 +26,7 @@ namespace SharpmakeGen
                 conf.SolutionFolder = "FunctionalTests";
 
                 conf.AddPrivateDependency<SharpmakeProject>(target);
-                conf.AddPrivateDependency<SharpmakeApplicationProject>(target);
+                //conf.AddPrivateDependency<SharpmakeApplicationProject>(target.Clone(Common.DefaultAppDotNetFramework));
                 conf.AddPrivateDependency<SharpmakeGeneratorsProject>(target);
                 conf.AddPrivateDependency<Platforms.CommonPlatformsProject>(target);
 

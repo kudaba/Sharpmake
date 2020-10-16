@@ -5,7 +5,7 @@ using Sharpmake;
 
 namespace SharpmakeGen.Samples
 {
-    public abstract class SampleProject : Common.SharpmakeBaseProject
+    public abstract class SampleProject : Common.SharpmakeLibProject
     {
         public string SharpmakeMainFile = "[project.Name].sharpmake.cs";
 
@@ -29,7 +29,7 @@ namespace SharpmakeGen.Samples
             //conf.TargetPath = @"[project.RootPath]\bin\[target.Optimization]\Samples";
 
             conf.AddPrivateDependency<SharpmakeProject>(target);
-            conf.AddPrivateDependency<SharpmakeApplicationProject>(target);
+            //conf.AddPrivateDependency<SharpmakeApplicationProject>(target.Clone(Common.DefaultAppDotNetFramework));
             conf.AddPrivateDependency<Platforms.CommonPlatformsProject>(target);
 
             conf.CsprojUserFile = new Project.Configuration.CsprojUserFileSettings

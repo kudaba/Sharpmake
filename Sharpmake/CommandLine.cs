@@ -78,6 +78,9 @@ namespace Sharpmake
             string[] commandLineArgs = Environment.GetCommandLineArgs();
             if (commandLineArgs.Length > 1)
             {
+                foreach (var arg in commandLineArgs)
+                    Util.LogWrite("arg '{0}'", arg);
+                Util.LogWrite("fullarg '{0}'", Environment.CommandLine);
                 string commandLine = Environment.CommandLine.Remove(0, commandLineArgs[0].Length + 1);
                 commandLine = commandLine.Trim(' ', '\"');
                 commandLine = commandLine.Replace(@"'", @"""");

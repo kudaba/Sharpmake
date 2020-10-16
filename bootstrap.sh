@@ -25,7 +25,7 @@ fi
 # workaround for https://github.com/mono/mono/issues/6752
 TERM=xterm
 
-SHARPMAKE_EXECUTABLE=$CURRENT_DIR/tmp/bin/debug/sharpmake.application/Sharpmake.Application.exe
+SHARPMAKE_MAIN="${1:-"$CURRENT_DIR/Sharpmake.Main.sharpmake.cs"}"
 
 $CURRENT_DIR/CompileSharpmake.sh $CURRENT_DIR/Sharpmake.Application/Sharpmake.Application.csproj Debug AnyCPU
 if [ $? -ne 0 ]; then
@@ -35,17 +35,9 @@ if [ $? -ne 0 ]; then
     fi
 fi
 
-which mono > /dev/null
-MONO_FOUND=$?
-if [ $MONO_FOUND -ne 0 ]; then
-    echo "Mono not found"
-    error
-fi
-
-SHARPMAKE_MAIN=${1:-"$CURRENT_DIR/Sharpmake.Main.sharpmake.cs"}
-
 echo "Generating Sharpmake solution..."
-SM_CMD="mono --debug \"${SHARPMAKE_EXECUTABLE}\" \"/sources(\\\"${SHARPMAKE_MAIN}\\\")\" /verbose"
+SM_CMD="dotnet tmp/bin/Debug/Sharpmake.Application/Sharpmake.Application.dll /sources\(\'${SHARPMAKE_MAIN}\'\) /verbose"
+#SM_CMD="dotnet run --verbosity m --project Sharpmake.Application/Sharpmake.Application.csproj --configuration Debug /sources\(\'${SHARPMAKE_MAIN}\'\) /verbose"
 echo $SM_CMD
 eval $SM_CMD || error
 

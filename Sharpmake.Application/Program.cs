@@ -164,11 +164,15 @@ namespace Sharpmake.Application
 
         #endregion
 
-        private static int Main()
+        private static int Main(string[] args)
         {
+            foreach (string arg in args)
+                Util.LogWrite("mainarg '{0}'", arg);
+
             if (CommandLine.ContainParameter("breakintodebugger"))
             {
-                System.Windows.Forms.MessageBox.Show("Debugger requested. Please attach a debugger and press OK");
+                Util.LogWrite("Debugger requested. Please attach a debugger and press OK");
+                Console.ReadLine();
                 Debugger.Break();
             }
             // This GC gives a little bit better results than the other ones. "LowLatency" is giving really bad results(twice slower than the other ones).

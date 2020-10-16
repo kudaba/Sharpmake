@@ -16,7 +16,7 @@ class Test:
         self.directory = directory
         self.assembly = directory + ".dll" # same name as the directory for now
         self.script_name = script_name
-        self.use_mono = os.name == "posix"
+        self.runs_on_unix = os.name == "posix"
         if project_root == "":
             self.project_root = directory
         else:
@@ -29,17 +29,18 @@ class Test:
             os.chdir(pwd)
 
             # Detects the path of the Sharpmake executable
-            sharpmake_path = find_target_path("Sharpmake.Application", "Sharpmake.Application.exe")
+            sharpmake_app = "Sharpmake.Application.dll" if self.runs_on_unix else "Sharpmake.Application.exe"
+            sharpmake_path = find_target_path("Sharpmake.Application", sharpmake_app)
 
             write_line("Using sharpmake " + sharpmake_path)
 
             # Builds the command line argument list.
-            sources = "/sources(@\"{}\")".format(os.path.join(self.directory, self.script_name))
-            assemblies = "/assemblies(@\"{}\")".format(find_target_path(self.directory, self.assembly))
-            referencedir = "/referencedir(@\"{}\")".format(os.path.join(self.directory, "reference"))
-            outputdir = "/outputdir(@\"{}\")".format(os.path.join(self.directory, "projects"))
-            remaproot = "/remaproot(@\"{}\")".format(self.project_root)
-            test = "/test(@\"Regression\")"
+            sources = "/sources(@\'{}\')".format(os.path.join(self.directory, self.script_name))
+            assemblies = "/assemblies(@\'{}\')".format(find_target_path(self.directory, self.assembly))
+            referencedir = "/referencedir(@\'{}\')".format(os.path.join(self.directory, "reference"))
+            outputdir = "/outputdir(@\'{}\')".format(os.path.join(self.directory, "projects"))
+            remaproot = "/remaproot(@\'{}\')".format(self.project_root)
+            test = "/test(@\'Regression\')"
             verbose = "/verbose"
 
             args = [
@@ -51,12 +52,11 @@ class Test:
                 verbose
             ]
 
-            if self.use_mono:
-                args_string = "\" \"".join([arg.replace('"','\\"') for arg in args])
-                cmd_line = "mono --debug {} \"{}\"".format(sharpmake_path, args_string)
-            else:
-                cmd_line = "{} \"{}\"".format(sharpmake_path, " ".join(args))
+            cmd_line = "{} \"{}\"".format(sharpmake_path, " ".join(args))
+            if self.runs_on_unix:
+                cmd_line = "dotnet " + cmd_line
 
+            print(cmd_line)
             return os.system(cmd_line)
 
         except:
@@ -79,7 +79,7 @@ tests = [
 ]
 
 def find_target_path(directory, target):
-    optim_tokens = ["debug", "release"]
+    optim_tokens = ["Debug", "Release"]
     for optim_token in optim_tokens:
         path = os.path.abspath(os.path.join("..", "tmp", "bin", optim_token, directory, target))
         if os.path.isfile(path):
@@ -99,11 +99,11 @@ def red_bg():
 def green_bg():
     if os.name == "nt":
         os.system("color 2F")
-        
+
 def black_bg():
     if os.name == "nt":
         os.system("color 0F")
-       
+
 
 def pause(timeout=None):
     if timeout is None:

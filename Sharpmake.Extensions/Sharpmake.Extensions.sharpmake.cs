@@ -5,7 +5,7 @@ using Sharpmake;
 
 namespace SharpmakeGen.Extensions
 {
-    public abstract class ExtensionProject : Common.SharpmakeBaseProject
+    public abstract class ExtensionProject : Common.SharpmakeLibProject
     {
         public ExtensionProject()
         {
