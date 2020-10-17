@@ -7,7 +7,7 @@ using Sharpmake;
 namespace SharpmakeGen
 {
     [Generate]
-    public class SharpmakeProject : Common.SharpmakeBaseProject
+    public class SharpmakeProject : Common.SharpmakeLibProject
     {
         public SharpmakeProject()
         {
@@ -22,11 +22,10 @@ namespace SharpmakeGen
             base.ConfigureAll(conf, target);
             conf.ProjectPath = @"[project.SourceRootPath]";
 
-            conf.ReferencesByNameExternal.Add("Microsoft.Build.Utilities.Core");
-
             conf.Options.Add(Options.CSharp.AllowUnsafeBlocks.Enabled);
+            conf.ReferencesByNuGetPackage.Add("Microsoft.Build.Utilities.Core", "16.7.0");
             conf.ReferencesByNuGetPackage.Add("Microsoft.CodeAnalysis.CSharp", "3.4.0");
-            conf.ReferencesByNuGetPackage.Add("Microsoft.VisualStudio.Setup.Configuration.Interop", "1.16.30");
+            conf.ReferencesByNuGetPackage.Add("Microsoft.VisualStudio.Setup.Configuration.Interop", "2.3.2262-g94fae01e");
         }
     }
 }

@@ -7,7 +7,7 @@ using Sharpmake;
 namespace SharpmakeGen
 {
     [Generate]
-    public class SharpmakeUnitTestsProject : Common.SharpmakeBaseProject
+    public class SharpmakeUnitTestsProject : Common.SharpmakeAppProject
     {
         public SharpmakeUnitTestsProject()
             : base(generateXmlDoc: false)
@@ -26,12 +26,17 @@ namespace SharpmakeGen
         {
             base.ConfigureAll(conf, target);
 
-            conf.AddPrivateDependency<SharpmakeProject>(target);
-            conf.AddPrivateDependency<SharpmakeGeneratorsProject>(target);
-            conf.AddPrivateDependency<Platforms.CommonPlatformsProject>(target);
+            var libTarget = target.Clone(Common.DefaultLibDotNetFramework);
+            conf.AddPrivateDependency<SharpmakeProject>(libTarget);
+            conf.AddPrivateDependency<SharpmakeGeneratorsProject>(libTarget);
+            conf.AddPrivateDependency<Platforms.CommonPlatformsProject>(libTarget);
 
-            conf.ReferencesByNuGetPackage.Add("NUnit", "3.4.1");
-            conf.ReferencesByNuGetPackage.Add("NUnit.Console", "3.4.1");
+            conf.ReferencesByNuGetPackage.Add("NUnit", "3.12.0");
+
+            conf.ReferencesByNuGetPackage.Add("NUnit3TestAdapter", "3.17.0");
+            conf.ReferencesByNuGetPackage.Add("Microsoft.NET.Test.Sdk", "16.7.1");
+
+            conf.ReferencesByNuGetPackage.Add("NUnit.Console", "3.11.1");
         }
     }
 }

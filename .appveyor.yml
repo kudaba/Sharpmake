@@ -1,9 +1,9 @@
 # Sharpmake AppVeyor CI configuration
 
 image:
-- macOS
 - Ubuntu
 - Visual Studio 2019
+- macOS
 
 skip_commits:
   files:
@@ -28,9 +28,9 @@ build_script:
 - cmd: CompileSharpmake.bat Sharpmake.sln "%CONFIGURATION%" "%PLATFORM%"
 - sh: ./CompileSharpmake.sh Sharpmake.sln "${CONFIGURATION}" "${PLATFORM}"
 
-test:
-  assemblies:
-    - 'tmp/bin/*/Sharpmake.UnitTests/Sharpmake.UnitTests.dll'
+test_script:
+- cmd: dotnet test tmp/bin/%CONFIGURATION%/Sharpmake.UnitTests/Sharpmake.UnitTests.dll
+- sh: dotnet test tmp/bin/${CONFIGURATION}/Sharpmake.UnitTests/Sharpmake.UnitTests.dll
 
 after_test:
 - cmd: python regression_test.py

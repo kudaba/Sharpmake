@@ -414,7 +414,7 @@ namespace Sharpmake
                         }
                         else
                         {
-                            if (Util.IsRunningInMono() &&
+                            if (Util.IsRunningOnUnix() &&
                                 index == 0 && currentChar == Path.DirectorySeparatorChar && Path.IsPathRooted(path))
                                 pathHelper.Append(currentChar);
 
@@ -1933,7 +1933,7 @@ namespace Sharpmake
             string[] requiredWorkloads = null
         )
         {
-            if (IsRunningInMono())
+            if (IsRunningOnUnix())
                 return null;
 
             var vsInstallations = GetVisualStudioInstallationsFromQuery(visualVersion, allowPrereleaseVersions, requiredComponents, requiredWorkloads);
@@ -2410,6 +2410,9 @@ namespace Sharpmake
         // http://www.mono-project.com/docs/faq/technical/#how-can-i-detect-if-am-running-in-mono
         private static readonly bool s_monoRuntimeExists = (Type.GetType("Mono.Runtime") != null);
         public static bool IsRunningInMono() => s_monoRuntimeExists;
+
+        private static readonly bool s_isUnix = Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX;
+        public static bool IsRunningOnUnix() => s_isUnix;
 
         public static Platform GetExecutingPlatform() => s_executingPlatform;
 

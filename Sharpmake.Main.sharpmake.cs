@@ -23,7 +23,19 @@ namespace SharpmakeGen
 
     public static class Common
     {
-        public static ITarget[] GetDefaultTargets()
+        public static DotNetFramework DefaultLibDotNetFramework => DotNetFramework.netstandard2_1;
+        public static ITarget[] GetDefaultLibTargets()
+        {
+            return GetDefaultTarget(DefaultLibDotNetFramework);
+        }
+
+        public static DotNetFramework DefaultAppDotNetFramework => DotNetFramework.netcore3_1;
+        public static ITarget[] GetDefaultAppTargets()
+        {
+            return GetDefaultTarget(DefaultAppDotNetFramework);
+        }
+
+        private static ITarget[] GetDefaultTarget(DotNetFramework dotNetFramework)
         {
             var result = new List<ITarget>();
             result.Add(
@@ -31,7 +43,7 @@ namespace SharpmakeGen
                     Platform.anycpu,
                     DevEnv.vs2019,
                     Optimization.Debug | Optimization.Release,
-                    framework: DotNetFramework.v4_7_2
+                    framework: dotNetFramework
                 )
             );
             return result.ToArray();
@@ -46,13 +58,14 @@ namespace SharpmakeGen
                 bool generateXmlDoc = true
             )
             {
-                AddTargets(GetDefaultTargets());
-
                 _generateXmlDoc = generateXmlDoc;
 
                 RootPath = Globals.AbsoluteRootPath;
 
                 DependenciesCopyLocal = DependenciesCopyLocalTypes.None;
+
+                // prevents output dir to have a netstandard subfolder
+                CustomProperties.Add("AppendTargetFrameworkToOutputPath", "false");
 
                 if (excludeSharpmakeFiles)
                     SourceFilesExcludeRegex.Add(@".*\.sharpmake.cs");
@@ -67,7 +80,7 @@ namespace SharpmakeGen
                 conf.TargetPath = @"[project.RootPath]\tmp\bin\[target.Optimization]\[project.Name]";
 
                 conf.IntermediatePath = @"[project.RootPath]\tmp\obj\[target.Optimization]\[project.Name]";
-                conf.BaseIntermediateOutputPath = conf.IntermediatePath;
+                //conf.BaseIntermediateOutputPath = conf.IntermediatePath;
 
                 conf.ReferencesByName.Add("System");
 
@@ -91,6 +104,28 @@ namespace SharpmakeGen
                 }
             }
         }
+
+        public abstract class SharpmakeLibProject : SharpmakeBaseProject
+        {
+            protected SharpmakeLibProject(
+                bool excludeSharpmakeFiles = true,
+                bool generateXmlDoc = true
+            ) : base(excludeSharpmakeFiles, generateXmlDoc)
+            {
+                AddTargets(GetDefaultLibTargets());
+            }
+        }
+
+        public abstract class SharpmakeAppProject : SharpmakeBaseProject
+        {
+            protected SharpmakeAppProject(
+                bool excludeSharpmakeFiles = true,
+                bool generateXmlDoc = true
+            ) : base(excludeSharpmakeFiles, generateXmlDoc)
+            {
+                AddTargets(GetDefaultAppTargets());
+            }
+        }
     }
 
     [Generate]
@@ -100,7 +135,7 @@ namespace SharpmakeGen
         {
             Name = "Sharpmake";
 
-            AddTargets(Common.GetDefaultTargets());
+            AddTargets(Common.GetDefaultLibTargets());
         }
 
         [Configure]
@@ -109,8 +144,9 @@ namespace SharpmakeGen
             conf.SolutionFileName = "[solution.Name]";
             conf.SolutionPath = @"[solution.SharpmakeCsPath]\";
 
-            conf.AddProject<SharpmakeApplicationProject>(target);
-            conf.AddProject<SharpmakeUnitTestsProject>(target);
+            var appTarget = target.Clone(Common.DefaultAppDotNetFramework);
+            conf.AddProject<SharpmakeApplicationProject>(appTarget);
+            conf.AddProject<SharpmakeUnitTestsProject>(appTarget);
 
             // Platforms, Extensions and Samples
             foreach (Type projectType in Assembly.GetExecutingAssembly().GetTypes().Where(t =>

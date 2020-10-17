@@ -15,7 +15,7 @@ class FunctionalTest(object):
     def __init__(self, directory, script_name, project_root = ""):
         self.directory = directory
         self.script_name = script_name
-        self.use_mono = os.name == "posix"
+        self.runs_on_unix = os.name == "posix"
         if project_root == "":
             self.project_root = directory
         else:
@@ -28,12 +28,13 @@ class FunctionalTest(object):
             os.chdir(pwd)
 
             # Detects the path of the Sharpmake executable
-            sharpmake_path = find_target_path(self.directory, "Sharpmake.Application.exe")
+            sharpmake_app = "Sharpmake.Application.dll" if self.runs_on_unix else "Sharpmake.Application.exe"
+            sharpmake_path = find_target_path(self.directory, sharpmake_app)
 
             write_line("Using sharpmake " + sharpmake_path)
 
             # Builds the command line argument list.
-            sources = "/sources(@\"{}\")".format(os.path.join(self.directory, self.script_name))
+            sources = "/sources(@\'{}\')".format(os.path.join(self.directory, self.script_name))
             verbose = "/verbose"
 
             args = [
@@ -41,12 +42,11 @@ class FunctionalTest(object):
                 verbose
             ]
 
-            if self.use_mono:
-                args_string = "\" \"".join([arg.replace('"','\\"') for arg in args])
-                cmd_line = "mono --debug {} \"{}\"".format(sharpmake_path, args_string)
-            else:
-                cmd_line = "{} \"{}\"".format(sharpmake_path, " ".join(args))
+            cmd_line = "{} \"{}\"".format(sharpmake_path, " ".join(args))
+            if self.runs_on_unix:
+                cmd_line = "dotnet " + cmd_line
 
+            print(cmd_line)
             generation_exit_code = os.system(cmd_line)
 
             if generation_exit_code != 0:
@@ -107,7 +107,7 @@ class FastBuildFunctionalTest(FunctionalTest):
         return 0
 
     def build(self, projectDir):
-        build_result = build_with_fastbuild(projectDir, self.directory)
+        build_result = build_with_fastbuild(projectDir, self.directory, self.runs_on_unix)
         if build_result != 0:
             return build_result
 
@@ -119,7 +119,7 @@ class NoAllFastBuildProjectFunctionalTest(FunctionalTest):
         super(NoAllFastBuildProjectFunctionalTest, self).__init__("NoAllFastBuildProjectFunctionalTest", "NoAllFastBuildProjectFunctionalTest.sharpmake.cs")
 
     def build(self, projectDir):
-        return build_with_fastbuild(projectDir, self.directory)
+        return build_with_fastbuild(projectDir, self.directory, self.runs_on_unix)
 
 
 funcTests = [
@@ -128,9 +128,10 @@ funcTests = [
 ]
 
 
-def build_with_fastbuild(root_dir, test_dir):
+def build_with_fastbuild(root_dir, test_dir, runs_on_unix):
     entry_path = os.getcwd()
-    fastBuildPath = os.path.join(entry_path, "tools", "FastBuild", "FBuild.exe");
+    fastBuildExe = "FBuild" if runs_on_unix else "FBuild.exe"
+    fastBuildPath = os.path.join(entry_path, "tools", "FastBuild", fastBuildExe);
     if not os.path.isfile(fastBuildPath):
         return -1
 
