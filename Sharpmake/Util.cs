@@ -769,9 +769,6 @@ namespace Sharpmake
         //     return capitalizedPath;
         // }
 
-        [System.Runtime.InteropServices.DllImport("msvcrt.dll", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl)]
-        private static extern int memcmp(byte[] b1, byte[] b2, long count);
-
         private static bool AreStreamsEqual(Stream stream1, Stream stream2)
         {
             const int BufferSize = 4096;
@@ -792,7 +789,7 @@ namespace Sharpmake
                 if (count1 == 0)
                     return true;
 
-                if (memcmp(buffer1, buffer2, count1) != 0)
+                if (!buffer1.SequenceEqual(buffer2))
                     return false;
             }
         }
