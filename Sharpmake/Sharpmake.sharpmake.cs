@@ -20,11 +20,15 @@ namespace SharpmakeGen
         public override void ConfigureAll(Configuration conf, Target target)
         {
             base.ConfigureAll(conf, target);
-            conf.ReferencesByNameExternal.Add("Microsoft.Build.Utilities.Core");
-
             conf.Options.Add(Options.CSharp.AllowUnsafeBlocks.Enabled);
+            conf.AddPrivateDependency<SharpmakeVisualStudio>(target);
+
             conf.ReferencesByNuGetPackage.Add("Microsoft.CodeAnalysis.CSharp", "3.4.0");
-            conf.ReferencesByNuGetPackage.Add("Microsoft.VisualStudio.Setup.Configuration.Interop", "1.16.30");
+            conf.ReferencesByNuGetPackage.Add("Microsoft.DiaSymReader.Native", "1.7.0");
+            if (target.Framework.IsDotNetCore())
+            {
+                conf.ReferencesByNuGetPackage.Add("Microsoft.Win32.Registry", "4.6.0-preview7.19362.9");
+            }
         }
     }
 }

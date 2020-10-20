@@ -21,8 +21,8 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\tmp\bin\debug\sharpmake</OutputPath>
-    <IntermediateOutputPath>..\tmp\obj\debug\sharpmake</IntermediateOutputPath>
-    <BaseIntermediateOutputPath>..\tmp\obj\debug\sharpmake</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>..\tmp\obj\v4_7_2_debug\sharpmake</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\tmp\obj\v4_7_2_debug\sharpmake</BaseIntermediateOutputPath>
     <DocumentationFile>..\tmp\bin\debug\sharpmake\sharpmake.xml</DocumentationFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
@@ -39,8 +39,8 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\tmp\bin\release\sharpmake</OutputPath>
-    <IntermediateOutputPath>..\tmp\obj\release\sharpmake</IntermediateOutputPath>
-    <BaseIntermediateOutputPath>..\tmp\obj\release\sharpmake</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>..\tmp\obj\v4_7_2_release\sharpmake</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\tmp\obj\v4_7_2_release\sharpmake</BaseIntermediateOutputPath>
     <DocumentationFile>..\tmp\bin\release\sharpmake\sharpmake.xml</DocumentationFile>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
@@ -52,9 +52,6 @@
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Build.Utilities.Core">
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
@@ -135,8 +132,15 @@
     <Compile Include="VariableAssignment.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sharpmake.VisualStudio\Sharpmake.VisualStudio.csproj">
+      <Project>{6d8fe1dc-434a-7a38-4090-d36562e6e696}</Project>
+      <Name>Sharpmake.VisualStudio</Name>
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.4.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="1.16.30" />
+    <PackageReference Include="Microsoft.DiaSymReader.Native" Version="1.7.0" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

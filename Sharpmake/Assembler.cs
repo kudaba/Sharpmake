@@ -20,7 +20,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Build.Utilities;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
@@ -63,7 +62,18 @@ namespace Sharpmake
 
         public bool UseDefaultReferences = true;
 
-        public static readonly string[] DefaultReferences = { "System.dll", "System.Core.dll" };
+        static readonly string[] _defaultReferences =
+        {
+            typeof(object).Assembly.Location, // mscorelib.dll for .NET, System.Private.CoreLib.dll for .NET Core
+            "System.dll",
+            "System.Core.dll",
+            "System.Linq.dll",
+            "System.Runtime.dll",
+            "System.Collections.dll",
+            "System.IO.FileSystem.dll",
+
+        };
+        public static readonly string[] DefaultReferences = _defaultReferences.Select(GetAssemblyDllPath).Where(f => !string.IsNullOrEmpty(f)).ToArray();
 
         private class AssemblyInfo : IAssemblyInfo
         {
@@ -399,24 +409,15 @@ namespace Sharpmake
 
         private HashSet<string> GetReferences()
         {
-            HashSet<string> references = new HashSet<string>();
+            var assemblies = _assemblies.Where(a => !a.IsDynamic).Select(a => a.Location);
+            var references = assemblies.Concat(_references);
 
             if (UseDefaultReferences)
             {
-                foreach (string defaultReference in DefaultReferences)
-                    references.Add(GetAssemblyDllPath(defaultReference));
+                references = references.Concat(DefaultReferences);
             }
 
-            foreach (string assemblyFile in _references)
-                references.Add(assemblyFile);
-
-            foreach (Assembly assembly in _assemblies)
-            {
-                if (!assembly.IsDynamic)
-                    references.Add(assembly.Location);
-            }
-
-            return references;
+            return references.ToHashSet();
         }
 
         private SourceText ReadSourceCode(string path)
@@ -677,25 +678,14 @@ namespace Sharpmake
             }
         }
 
-        public static IEnumerable<string> EnumeratePathToDotNetFramework()
-        {
-            for (int i = (int)TargetDotNetFrameworkVersion.VersionLatest; i >= 0; --i)
-            {
-                string frameworkDirectory = ToolLocationHelper.GetPathToDotNetFramework((TargetDotNetFrameworkVersion)i);
-                if (frameworkDirectory != null)
-                    yield return frameworkDirectory;
-            }
-        }
-
         public static string GetAssemblyDllPath(string fileName)
         {
-            foreach (string frameworkDirectory in EnumeratePathToDotNetFramework())
-            {
-                string result = Path.Combine(frameworkDirectory, fileName);
-                if (File.Exists(result))
-                    return result;
-            }
-            return null;
+            if (File.Exists(fileName))
+                return fileName;
+
+            return VisualStudioExtension.EnumeratePathToDotNetFramework()
+                .Select(path => Path.Combine(path, fileName))
+                .FirstOrDefault(File.Exists);
         }
 
         /// <summary>

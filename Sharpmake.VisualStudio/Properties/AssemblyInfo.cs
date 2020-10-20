@@ -18,12 +18,12 @@ using Sharpmake;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sharpmake.CommonPlatforms")]
-[assembly: AssemblyDescription("Standard Sharpmake extension that provides generators for the common and open platforms, such as Windows and Linux.")]
+[assembly: AssemblyTitle("Sharpmake.VisualStudio")]
+[assembly: AssemblyDescription("Sharpmake library that provides old .NET builds with access to .NET Visual Studio utilities.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Ubisoft")]
-[assembly: AssemblyProduct("Sharpmake.CommonPlatforms")]
-[assembly: AssemblyCopyright("Copyright \u00A9 Ubisoft 2017")]
+[assembly: AssemblyProduct("Sharpmake.VisualStudio")]
+[assembly: AssemblyCopyright("Copyright \u00A9 Ubisoft 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,7 +33,7 @@ using Sharpmake;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("3b2d7069-da71-4aba-b601-a72f313c5ccb")]
+[assembly: Guid("6F6E877A-7201-43DD-9ABE-BA701C699B8F")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -44,6 +44,4 @@ using Sharpmake;
 //
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.14.5.0")]
-
-[assembly: SharpmakeExtension]
+[assembly: AssemblyVersion("0.9.0.0")]

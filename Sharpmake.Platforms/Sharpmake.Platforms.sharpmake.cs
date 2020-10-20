@@ -17,7 +17,6 @@ namespace SharpmakeGen.Platforms
         {
             base.ConfigureAll(conf, target);
 
-            conf.ProjectFileName = "[project.Name]";
             conf.SolutionFolder = "Platforms";
 
             conf.AddPrivateDependency<SharpmakeProject>(target);

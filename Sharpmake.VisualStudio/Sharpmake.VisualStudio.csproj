@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <PlatformTarget Condition=" '$(Platform)' == '' ">AnyCPU</PlatformTarget>
+    <ProjectGuid>{6D8FE1DC-434A-7A38-4090-D36562E6E696}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sharpmake.VisualStudio</RootNamespace>
+    <AssemblyName>Sharpmake.VisualStudio</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\tmp\bin\debug\sharpmake.visualstudio</OutputPath>
+    <IntermediateOutputPath>..\tmp\obj\v4_7_2_debug\sharpmake.visualstudio</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\tmp\obj\v4_7_2_debug\sharpmake.visualstudio</BaseIntermediateOutputPath>
+    <DocumentationFile>..\tmp\bin\debug\sharpmake.visualstudio\sharpmake.visualstudio.xml</DocumentationFile>
+    <DefineConstants>DEBUG;TRACE;VISUAL_STUDIO_EXTENSION_ENABLED</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>618</WarningsNotAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>1570,1591</NoWarn>
+    <LangVersion>7</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\tmp\bin\release\sharpmake.visualstudio</OutputPath>
+    <IntermediateOutputPath>..\tmp\obj\v4_7_2_release\sharpmake.visualstudio</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\tmp\obj\v4_7_2_release\sharpmake.visualstudio</BaseIntermediateOutputPath>
+    <DocumentationFile>..\tmp\bin\release\sharpmake.visualstudio\sharpmake.visualstudio.xml</DocumentationFile>
+    <DefineConstants>TRACE;VISUAL_STUDIO_EXTENSION_ENABLED</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>618</WarningsNotAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>1570,1591</NoWarn>
+    <LangVersion>7</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build.Utilities.Core">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VisualStudio.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="1.16.30" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

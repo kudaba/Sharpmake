@@ -613,7 +613,6 @@ namespace Sharpmake.Generators.VisualStudio
                     using (resolver.NewScopedParameter("IncludeOutputGroupsInVSIX", IncludeOutputGroupsInVSIX))
                     {
                         var writer = new StringWriter();
-
                         writer.Write(Template.ItemGroups.ProjectReferenceBegin);
                         writer.Write(Template.ItemGroups.ProjectGUID);
                         writer.Write(Template.ItemGroups.ProjectRefName);
@@ -1309,6 +1308,47 @@ namespace Sharpmake.Generators.VisualStudio
             UserFile uf = new UserFile(projectFilePath);
             uf.GenerateUserFile(_builder, project, _projectConfigurationList, generatedFiles, skipFiles);
 
+            // Directory.Build.props is only required if BaseIntermediateOutputPath is set on any configurations
+            if (isNetCoreProjectSchema)
+            {
+                if (_projectConfigurationList.Any(conf => options[conf]["BaseIntermediateOutputPath"] != RemoveLineTag))
+                {
+                    var fileName = Path.Combine(projectPath, "Directory.Build.props");
+                    var fileGenerator = new FileGenerator();
+                    fileGenerator.WriteLine(Template.DirectoryBuildProps.FileHeader);
+
+                    foreach (var conf in _projectConfigurationList)
+                    {
+                        if (options[conf]["BaseIntermediateOutputPath"] != RemoveLineTag)
+                        {
+                            using (fileGenerator.Declare("platformName", Util.GetPlatformString(conf.Platform, conf.Project, conf.Target)))
+                            using (fileGenerator.Declare("conf", conf))
+                            using (fileGenerator.Declare("project", project))
+                            using (fileGenerator.Declare("target", conf.Target))
+                            using (fileGenerator.Declare("options", options[conf]))
+                            {
+                                fileGenerator.WriteLine(Template.DirectoryBuildProps.ProjectConfiguration);
+                            }
+
+                            options[conf]["BaseIntermediateOutputPath"] = RemoveLineTag;
+                        }
+                    }
+
+                    fileGenerator.WriteLine(Template.DirectoryBuildProps.FileFooter);
+
+                    // remove all line that contain RemoveLineTag
+                    fileGenerator.RemoveTaggedLines();
+                    using (MemoryStream stream = fileGenerator.ToMemoryStream())
+                    {
+                        FileInfo userFileInfo = new FileInfo(fileName);
+                        if (_builder.Context.WriteGeneratedFile(project.GetType(), userFileInfo, stream))
+                            generatedFiles.Add(userFileInfo.FullName);
+                        else
+                            skipFiles.Add(userFileInfo.FullName);
+                    }
+                }
+            }
+
             // configuration general
             foreach (Project.Configuration conf in _projectConfigurationList)
             {
@@ -1426,7 +1466,12 @@ namespace Sharpmake.Generators.VisualStudio
             }
             #endregion
 
-            writer.Write(itemGroups.Resolve(resolver));
+            // .Net Core doesn't use normal references, most are automatic from the SDK and everything else comes from Nuget and Project references
+            if (isNetCoreProjectSchema)
+                itemGroups.References.Clear();
+
+            using (resolver.NewScopedParameter("NetCoreCleanLine", isNetCoreProjectSchema ? RemoveLineTag : ""))
+                writer.Write(itemGroups.Resolve(resolver));
 
             var importProjects = new List<ImportProject>(project.ImportProjects);
 
@@ -1435,7 +1480,6 @@ namespace Sharpmake.Generators.VisualStudio
             {
                 importProjects.RemoveAll(i => i.Project == CSharpProject.DefaultImportProject);
             }
-
 
             if (project.ProjectTypeGuids == CSharpProjectType.Vsix)
             {
@@ -3024,6 +3068,8 @@ namespace Sharpmake.Generators.VisualStudio
 
             options["StartWorkingDirectory"] = string.IsNullOrEmpty(conf.StartWorkingDirectory) ? RemoveLineTag : conf.StartWorkingDirectory;
             options["DocumentationFile"] = string.IsNullOrEmpty(conf.XmlDocumentationFile) ? RemoveLineTag : Util.PathGetRelative(_projectPath, conf.XmlDocumentationFile);
+
+            options["GenerateAssemblyInfo"] = !conf.GenerateAssemblyInfo.HasValue ? RemoveLineTag : conf.GenerateAssemblyInfo.Value.ToString();
 
             ProcessDependencyCopy(project, conf);
 

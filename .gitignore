@@ -9,6 +9,7 @@
 !Sharpmake.Application/Sharpmake.Application.csproj
 !Sharpmake.Generators/Sharpmake.Generators.csproj
 !Sharpmake.Platforms/Sharpmake.CommonPlatforms/Sharpmake.CommonPlatforms.csproj
+!Sharpmake.VisualStudio/Sharpmake.VisualStudio.csproj
 
 # Samples and FunctionalTests generated projects
 samples/*/projects/*
@@ -61,7 +62,8 @@ _ReSharper*/
 project.json
 project.lock.json
 Sharpmake.VC.db
-
+Directory.Build.props
+launchSettings.json
 .idea
 
 # Desktop Services Store on MacOS

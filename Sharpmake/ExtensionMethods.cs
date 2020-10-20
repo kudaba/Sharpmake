@@ -303,7 +303,7 @@ namespace Sharpmake
                         return pathOverride;
                 }
 
-                string installDir = Util.GetVisualStudioInstallPathFromQuery(visualVersion);
+                string installDir = VisualStudioExtension.GetVisualStudioInstallPathFromQuery(visualVersion.GetVisualMajorVersion());
                 if (string.IsNullOrEmpty(installDir))
                 {
                     switch (visualVersion)
@@ -882,19 +882,6 @@ namespace Sharpmake
                 return true;
 
             return false;
-        }
-
-        public static int IndexOf<T>(this T[] source, T value)
-        {
-            return IndexOf<T>(source, value, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        public static int IndexOf<T>(this T[] source, T value, StringComparison stringComparison)
-        {
-            if (typeof(T) == typeof(string))
-                return Array.FindIndex(source, m => m.ToString().Equals(value.ToString(), stringComparison));
-            else
-                return Array.IndexOf(source, value);
         }
     }
 }
