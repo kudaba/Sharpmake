@@ -64,6 +64,7 @@ namespace Sharpmake
 
         static readonly string[] _defaultReferences =
         {
+            // Minimum required assemblies
             typeof(object).Assembly.Location, // mscorelib.dll for .NET, System.Private.CoreLib.dll for .NET Core
             "System.dll",
             "System.Core.dll",
@@ -72,8 +73,21 @@ namespace Sharpmake
             "System.Collections.dll",
             "System.IO.FileSystem.dll",
 
+            // Common utilitie assemblies that were commonly included in old c# compiler
+            typeof(System.Text.RegularExpressions.Regex).Assembly.Location,
+            typeof(Console).Assembly.Location,
+            typeof(StreamReader).Assembly.Location,
         };
-        public static readonly string[] DefaultReferences = _defaultReferences.Select(GetAssemblyDllPath).Where(f => !string.IsNullOrEmpty(f)).ToArray();
+        
+        // Get the super set of assemblies I currently have loaded and explicit default references
+        public static readonly string[] DefaultReferences = AppDomain.CurrentDomain.GetAssemblies()
+            .Where(a => !a.IsDynamic)
+            .Select(a => a.Location)
+            .Concat(_defaultReferences.Select(GetAssemblyDllPath).Where(f => !string.IsNullOrEmpty(f)).ToArray())
+            // Don't include any references from sharpmake output folder (may include duplicates of app references)
+            .Where(f => f.IndexOf("Sharpmake", StringComparison.OrdinalIgnoreCase) == -1)
+            .Distinct()
+            .ToArray();
 
         private class AssemblyInfo : IAssemblyInfo
         {
@@ -470,7 +484,7 @@ namespace Sharpmake
                     pdbStream,
                     embeddedTexts: embeddedTexts,
                     options: new EmitOptions(
-                        debugInformationFormat: Util.IsRunningInMono() ? DebugInformationFormat.PortablePdb : DebugInformationFormat.Pdb,
+                        debugInformationFormat: Util.IsRunningOnUnix() ? DebugInformationFormat.PortablePdb : DebugInformationFormat.Pdb,
                         pdbFilePath: pdbFilePath
                     )
                 );

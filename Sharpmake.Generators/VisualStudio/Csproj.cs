@@ -1352,6 +1352,18 @@ namespace Sharpmake.Generators.VisualStudio
             // configuration general
             foreach (Project.Configuration conf in _projectConfigurationList)
             {
+                var confOptions = options[conf];
+                if (isNetCoreProjectSchema)
+                {
+                    confOptions["OutDir"] = confOptions["OutputDirectory"];
+                    confOptions["OutputPath"] = RemoveLineTag;
+                }
+                else
+                {
+                    confOptions["OutDir"] = RemoveLineTag;
+                    confOptions["OutputPath"] = confOptions["OutputDirectory"];
+                }
+
                 using (resolver.NewScopedParameter("platformName", Util.GetPlatformString(conf.Platform, conf.Project, conf.Target)))
                 using (resolver.NewScopedParameter("conf", conf))
                 using (resolver.NewScopedParameter("project", project))

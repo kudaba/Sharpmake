@@ -4,13 +4,13 @@
 COLOR
 
 :: First compile sharpmake to insure we are trying to deploy using an executable corresponding to the code.
-call CompileSharpmake.bat Sharpmake.sln Debug "Any CPU"
+call CompileSharpmake_core.bat Sharpmake.Application/Sharpmake.Application_Core.csproj Debug
+call CompileSharpmake_core.bat Sharpmake_Core.sln Debug
 if %errorlevel% NEQ 0 goto error
 
 :: main
 set ERRORLEVEL_BACKUP=0
 
-:: samples
 call :UpdateRef samples ConfigureOrder              main.sharpmake.cs                          reference         ConfigureOrder
 if not "%ERRORLEVEL_BACKUP%" == "0" goto error
 call :UpdateRef samples CPPCLI                      CLRTest.sharpmake.cs                       reference         CPPCLI
@@ -62,9 +62,9 @@ pushd %CD%
 :: set testScopedCurrentDirectory as current
 cd /d %~dp0%~1
 
-set SHARPMAKE_EXECUTABLE=%~dp0tmp\bin\debug\Sharpmake.Application\Sharpmake.Application.exe
-if not exist %SHARPMAKE_EXECUTABLE% set SHARPMAKE_EXECUTABLE=%~dp0tmp\bin\release\Sharpmake.Application\Sharpmake.Application.exe
-if not exist %SHARPMAKE_EXECUTABLE% echo Cannot find sharpmake executable in %~dp0tmp\bin\[debug|release]\Sharpmake.Application & pause & goto error
+set SHARPMAKE_EXECUTABLE=%~dp0tmp\bin\debug\sharpmake.application\Sharpmake.Application.exe
+if not exist %SHARPMAKE_EXECUTABLE% set SHARPMAKE_EXECUTABLE=%~dp0tmp\bin\release\sharpmake.application\Sharpmake.Application.exe
+if not exist %SHARPMAKE_EXECUTABLE% echo Cannot find sharpmake executable in %~dp0bin & pause & goto error
 
 echo Using executable %SHARPMAKE_EXECUTABLE%
 

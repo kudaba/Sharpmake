@@ -12,7 +12,7 @@ pushd "%~dp0"
 set VSWHERE="%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
 if not exist %VSWHERE% (
     echo ERROR: Cannot determine the location of the vswhere command Common Tools folder.
-    goto error
+    goto end
 )
 
 set VSMSBUILDCMD=
@@ -24,7 +24,7 @@ for /f "usebackq delims=" %%i in (`%VSWHERE% -latest -products * -property insta
 
 if not defined VSMSBUILDCMD (
     echo ERROR: Cannot determine the location of Common Tools folder.
-    goto error
+    goto end
 )
 echo MSBuild batch path: !VSMSBUILDCMD!
 call !VSMSBUILDCMD!

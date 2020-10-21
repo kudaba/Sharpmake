@@ -5,11 +5,11 @@
 *.sln
 *.csproj
 # but negate for the following, mandatorily versioned
-!Sharpmake/Sharpmake.csproj
-!Sharpmake.Application/Sharpmake.Application.csproj
-!Sharpmake.Generators/Sharpmake.Generators.csproj
-!Sharpmake.Platforms/Sharpmake.CommonPlatforms/Sharpmake.CommonPlatforms.csproj
-!Sharpmake.VisualStudio/Sharpmake.VisualStudio.csproj
+!Sharpmake/Sharpmake*.csproj
+!Sharpmake.Application/Sharpmake.Application*.csproj
+!Sharpmake.Generators/Sharpmake.Generators*.csproj
+!Sharpmake.Platforms/Sharpmake.CommonPlatforms/Sharpmake.CommonPlatforms*.csproj
+!Sharpmake.VisualStudio/Sharpmake.VisualStudio*.csproj
 
 # Samples and FunctionalTests generated projects
 samples/*/projects/*

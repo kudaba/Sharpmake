@@ -32,7 +32,7 @@ namespace FastBuild
                         BuildSystem.FastBuild
             ));
 
-            SourceRootPath = @"[project.SharpmakeCsPath]\codebase";
+            RootPath = @"[project.SharpmakeCsPath]\codebase";
         }
 
         [Configure()]

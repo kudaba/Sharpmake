@@ -127,7 +127,8 @@ namespace Sharpmake.Generators.VisualStudio
     <DebugType>[options.DebugType]</DebugType>
     <Optimize>[options.Optimize]</Optimize>
     <BaseAddress>[options.BaseAddress]</BaseAddress>
-    <OutputPath>[options.OutputDirectory]</OutputPath>
+    <OutputPath>[options.OutputPath]</OutputPath>
+    <OutDir>[options.OutDir]</OutDir>
     <IntermediateOutputPath>[options.IntermediateDirectory]</IntermediateOutputPath>
     <BaseIntermediateOutputPath>[options.BaseIntermediateOutputPath]</BaseIntermediateOutputPath>
     <DocumentationFile>[options.DocumentationFile]</DocumentationFile>
@@ -555,6 +556,7 @@ namespace Sharpmake.Generators.VisualStudio
 
                 public static string CopyToOutputDirectory =
 @"      <CopyToOutputDirectory>[copyToOutputDirectory]</CopyToOutputDirectory>
+      <CopyLocalLockFileAssemblies>[copyToOutputDirectory]</CopyLocalLockFileAssemblies>
 ";
 
                 public static string Analyzer =

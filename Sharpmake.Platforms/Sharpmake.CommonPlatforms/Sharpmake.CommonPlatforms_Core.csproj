@@ -1,0 +1,86 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <PlatformTarget Condition=" '$(Platform)' == '' ">AnyCPU</PlatformTarget>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sharpmake</RootNamespace>
+    <AssemblyName>Sharpmake.CommonPlatforms</AssemblyName>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <FileAlignment>512</FileAlignment>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutDir>..\..\tmp\bin\debug\sharpmake.commonplatforms</OutDir>
+    <IntermediateOutputPath>..\..\tmp\obj\netcore3_0_debug\sharpmake.commonplatforms</IntermediateOutputPath>
+    <DocumentationFile>..\..\tmp\bin\debug\sharpmake.commonplatforms\sharpmake.commonplatforms.xml</DocumentationFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>618</WarningsNotAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>1570,1591</NoWarn>
+    <LangVersion>7</LangVersion>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutDir>..\..\tmp\bin\release\sharpmake.commonplatforms</OutDir>
+    <IntermediateOutputPath>..\..\tmp\obj\netcore3_0_release\sharpmake.commonplatforms</IntermediateOutputPath>
+    <DocumentationFile>..\..\tmp\bin\release\sharpmake.commonplatforms\sharpmake.commonplatforms.xml</DocumentationFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>618</WarningsNotAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>1570,1591</NoWarn>
+    <LangVersion>7</LangVersion>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Android\AndroidBuildTargets.cs" />
+    <Compile Include="Android\AndroidPlatform.Vcxproj.Template.cs" />
+    <Compile Include="Android\AndroidPlatform.cs" />
+    <Compile Include="Android\GlobalSettings.cs" />
+    <Compile Include="Android\Util.cs" />
+    <Compile Include="Apple\BaseApplePlatform.Bff.Template.cs" />
+    <Compile Include="Apple\BaseApplePlatform.cs" />
+    <Compile Include="Apple\MacOsPlatform.cs" />
+    <Compile Include="Apple\iOsPlatform.Bff.Template.cs" />
+    <Compile Include="Apple\iOsPlatform.cs" />
+    <Compile Include="BaseMicrosoftPlatform.Vcxproj.Template.cs" />
+    <Compile Include="BaseMicrosoftPlatform.cs" />
+    <Compile Include="BasePlatform.Vcxproj.Template.cs" />
+    <Compile Include="BasePlatform.cs" />
+    <Compile Include="DefaultPlatform.cs" />
+    <Compile Include="DotNetPlatform.cs" />
+    <Compile Include="Linux\GlobalSettings.cs" />
+    <Compile Include="Linux\LinuxOptions.cs" />
+    <Compile Include="Linux\LinuxPlatform.Bff.Template.cs" />
+    <Compile Include="Linux\LinuxPlatform.Vcxproj.Template.cs" />
+    <Compile Include="Linux\LinuxPlatform.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Windows\BaseWindowsPlatform.cs" />
+    <Compile Include="Windows\ClangForWindowsSettings.cs" />
+    <Compile Include="Windows\Win32Platform.cs" />
+    <Compile Include="Windows\Win64EnvironmentVariableResolver.cs" />
+    <Compile Include="Windows\Win64Platform.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Sharpmake.Generators\Sharpmake.Generators_Core.csproj">
+      <Private>false</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sharpmake\Sharpmake_Core.csproj">
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

@@ -2313,7 +2313,7 @@ namespace Sharpmake
         }
 
         // For a lot smaller details mac is considered as running on unix
-        private static readonly bool s_isUnix = Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX;
+        private static readonly bool s_isUnix = s_monoRuntimeExists || Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX;
         public static bool IsRunningOnUnix() => s_isUnix;
 
         private static readonly string s_framework = Assembly.GetEntryAssembly()?.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName;
