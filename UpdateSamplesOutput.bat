@@ -70,7 +70,7 @@ echo Using executable %SHARPMAKE_EXECUTABLE%
 
 echo Updating references of %2...
 rd /s /q "%~2\%~4"
-call %SHARPMAKE_EXECUTABLE% "/sources(@"%~2\%~3") /outputdir(@"%~2\%~4") /remaproot(@"%~5") /verbose"
+call %SHARPMAKE_EXECUTABLE% /sources(@'%~2\%~3') /outputdir(@'%~2\%~4') /remaproot(@'%~5') /verbose
 set ERRORLEVEL_BACKUP=%errorlevel%
 :: restore caller current directory
 popd

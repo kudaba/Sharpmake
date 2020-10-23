@@ -252,8 +252,10 @@ namespace Sharpmake
 
             conf.CsprojUserFile = new Project.Configuration.CsprojUserFileSettings();
             conf.CsprojUserFile.StartAction = Project.Configuration.CsprojUserFileSettings.StartActionSetting.Program;
-            string quote = Util.IsRunningInMono() ? @"\""" : @""""; // When running in Mono, we must escape "
-            conf.CsprojUserFile.StartArguments = $@"/sources(@{quote}{string.Join(";", MainSources)}{quote}) {startArguments}";
+            string quote = "\'"; // Use single quote that is cross platform safe
+            string lbracket = Util.IsRunningOnUnix() ? @"\(" : @"("; // When running in unix, we must escape brackets as well
+            string rbracket = Util.IsRunningOnUnix() ? @"\)" : @")"; // When running in unix, we must escape brackets as well
+            conf.CsprojUserFile.StartArguments = $@"/sources{lbracket}@{quote}{string.Join(";", MainSources)}{quote}{rbracket} {startArguments}";
             conf.CsprojUserFile.StartProgram = sharpmakeApplicationExePath;
         }
     }

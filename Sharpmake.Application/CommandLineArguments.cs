@@ -70,7 +70,7 @@ namespace Sharpmake.Application
             public bool GenerateDebugSolution = false;
             public string DebugSolutionStartArguments = string.Empty;
 
-            [CommandLine.Option("sources", @"sharpmake sources files: ex: /sources( ""project1.sharpmake"", ""..\..\project2.sharpmake"" )")]
+            [CommandLine.Option("sources", @"sharpmake sources files: ex: /sources( 'project1.sharpmake', '..\..\project2.sharpmake' )")]
             public void SetSources(params string[] files)
             {
                 Sources = ValidateFiles(files);
@@ -86,7 +86,7 @@ namespace Sharpmake.Application
                 Array.ForEach(Assemblies, (string assembly) => DebugWriteLine("  " + assembly));
             }
 
-            [CommandLine.Option("defines", @"sharpmake compilation defines: ex: /defines( ""SHARPMAKE_0_8_0"", ""GITLAB"" )")]
+            [CommandLine.Option("defines", @"sharpmake compilation defines: ex: /defines( 'SHARPMAKE_0_8_0', 'GITLAB' )")]
             public void SetDefines(params string[] defines)
             {
                 Defines = ValidateDefines(defines);
@@ -95,7 +95,7 @@ namespace Sharpmake.Application
                     DebugWriteLine("  " + define);
             }
 
-            [CommandLine.Option("projectlogfiles", @"log files contained in a project for debug purpose: ex: /projectlogfiles( ""s:\p4\ac\dev\sharpmake\projects\win32\system\system.vcproj"" )")]
+            [CommandLine.Option("projectlogfiles", @"log files contained in a project for debug purpose: ex: /projectlogfiles( 's:\p4\ac\dev\sharpmake\projects\win32\system\system.vcproj' )")]
             public void ProjectLogFiles(string projectFile)
             {
                 Tools.ProjectLogFiles(projectFile);
@@ -168,7 +168,7 @@ namespace Sharpmake.Application
                 Debug = true;
             }
 
-            [CommandLine.Option("sharpmakemutexsuffix", @"Allow custom mutex name suffix. Useful to debug concurrently multiple sharpmake running from different branches. Ex: /sharpmakemutexsuffix(""Name"")")]
+            [CommandLine.Option("sharpmakemutexsuffix", @"Allow custom mutex name suffix. Useful to debug concurrently multiple sharpmake running from different branches. Ex: /sharpmakemutexsuffix('Name')")]
             public void CommandLineSharpmakeMutexSuffix(string name)
             {
                 MutexSuffix = name;
@@ -184,7 +184,7 @@ namespace Sharpmake.Application
 Regression: tests if the dir provided in output is equal to the reference dir after a generation. returns -1 if different
 QuickConfigure: tests if the configure methods are reversible. returns -1 if it is not reversible
 Configure: tests if the configure methods are reversible, track the problems. return -1 if it is not reversible
-(validates configure order): ex: /test(<""Regression""|""QuickConfigure""|""Configure"">)")]
+(validates configure order): ex: /test(<'Regression'|'QuickConfigure'|'Configure'>)")]
             public void CommandLineStrict(string option)
             {
                 _testOptionValid = Enum.TryParse(option, out TestOption);
@@ -212,7 +212,7 @@ Configure: tests if the configure methods are reversible, track the problems. re
 
             [CommandLine.Option("outputdir", @"Redirect solutions and projects output folder.
 If this is set, autocleanup will be ignored.
-It defines where the files should be written: ex: /outputdir(""C:\outputdirectory"")")]
+It defines where the files should be written: ex: /outputdir('C:\outputdirectory')")]
             public void CommandLineSetOutput(string output)
             {
                 OutputDirectory = new DirectoryInfo(output);
@@ -221,7 +221,7 @@ It defines where the files should be written: ex: /outputdir(""C:\outputdirector
 
             [CommandLine.Option("referencedir", @"solutions and projects reference folder.
 Must be grouped with /outputdir(...) and /test(...).
-It defines what should the files look like: ex: /referencedir(""C:\referencedirectory"")")]
+It defines what should the files look like: ex: /referencedir('C:\referencedirectory')")]
             public void CommandLineSetReference(string reference)
             {
                 ReferenceDirectory = new DirectoryInfo(reference);
@@ -230,7 +230,7 @@ It defines what should the files look like: ex: /referencedir(""C:\referencedire
 
             [CommandLine.Option("remaproot", @"Path to remove from the beginning of default output paths when remapping.
 Used when /outputdir is set.
-ex: /remaproot(""C:\p4ws\projectRoot\"")")]
+ex: /remaproot('C:\p4ws\projectRoot\')")]
             public void CommandLineSetRemapRoot(string remapRoot)
             {
                 RemapRoot = new DirectoryInfo(remapRoot);
@@ -239,7 +239,7 @@ ex: /remaproot(""C:\p4ws\projectRoot\"")")]
 
             [CommandLine.Option("fakesourcedirfile", @"path to a file containing the list of files in the source tree
 This list will be used instead of the real source path
-ex: /fakesourcedirfile( ""files.txt"" ")]
+ex: /fakesourcedirfile( 'files.txt' ")]
             public void CommandLineFakeSourceDirFile(string fakeSourceDirFile)
             {
                 string fakeSourceDirFileFullPath = Path.GetFullPath(fakeSourceDirFile);
@@ -325,7 +325,7 @@ ex: /fakesourcedirfile( ""files.txt"" ")]
             }
 
             [CommandLine.Option("debugSolutionStartArguments", @"Adds arguments to the debug commandline 
-of the project generated by /generateDebugSolution. ex: /debugSolutionStartArguments(""/diagnostics"")")]
+of the project generated by /generateDebugSolution. ex: /debugSolutionStartArguments('/diagnostics')")]
             public void CommandLineDebugSolutionStartArguments(string arguments)
             {
                 DebugSolutionStartArguments = arguments;
@@ -333,7 +333,7 @@ of the project generated by /generateDebugSolution. ex: /debugSolutionStartArgum
 
             [CommandLine.Option("forcecleanup", @"Path to an autocleanup db.
 If this is set, all the files listed in the DB will be removed, and sharpmake will exit.
-ex: /forcecleanup( ""tmp/sharpmakeautocleanupdb.bin"" ")]
+ex: /forcecleanup( 'tmp/sharpmakeautocleanupdb.bin' ")]
             public void CommandLineForceCleanup(string autocleanupDb)
             {
                 if (!File.Exists(autocleanupDb))
