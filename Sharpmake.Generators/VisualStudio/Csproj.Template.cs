@@ -125,7 +125,9 @@ namespace Sharpmake.Generators.VisualStudio
     <DebugType>[options.DebugType]</DebugType>
     <Optimize>[options.Optimize]</Optimize>
     <BaseAddress>[options.BaseAddress]</BaseAddress>
-    <OutputPath>[options.OutputDirectory]</OutputPath>
+    <OutputPath>[options.OutputPath]</OutputPath>
+    <OutDir>[options.OutDir]</OutDir>
+    <PublishDir>[options.PublishDir]</PublishDir>
     <IntermediateOutputPath>[options.IntermediateDirectory]</IntermediateOutputPath>
     <BaseIntermediateOutputPath>[options.BaseIntermediateOutputPath]</BaseIntermediateOutputPath>
     <DocumentationFile>[options.DocumentationFile]</DocumentationFile>
