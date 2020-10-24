@@ -11,23 +11,20 @@ function error {
 }
 
 # fail immediately if anything goes wrong
-set -e
+# set -e
 
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
-which msbuild > /dev/null
-MSBUILD_FOUND=$?
-if [ $MSBUILD_FOUND -ne 0 ]; then
-    echo "MSBuild not found"
+which dotnet > /dev/null
+DOTNET_FOUND=$?
+if [ $DOTNET_FOUND -ne 0 ]; then
+    echo "dotnet not found, see https://dotnet.microsoft.com/download"
     error
 fi
 
-# workaround for https://github.com/mono/mono/issues/6752
-TERM=xterm
-
 SHARPMAKE_MAIN="${1:-"$CURRENT_DIR/Sharpmake.Main.sharpmake.cs"}"
 
-$CURRENT_DIR/CompileSharpmake.sh $CURRENT_DIR/Sharpmake.Application/Sharpmake.Application.csproj Debug AnyCPU
+$CURRENT_DIR/CompileSharpmake.sh $CURRENT_DIR/Sharpmake.Application/Sharpmake.Application.csproj Debug
 if [ $? -ne 0 ]; then
     echo "The build has failed."
     if [ -f $SHARPMAKE_EXECUTABLE ]; then
@@ -36,7 +33,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Generating Sharpmake solution..."
-SM_CMD="dotnet tmp/bin/Debug/Sharpmake.Application/Sharpmake.Application.dll /sources\(\'${SHARPMAKE_MAIN}\'\) /verbose"
+SM_CMD="tmp/bin/Debug/Sharpmake.Application/Sharpmake.Application /sources\(\'${SHARPMAKE_MAIN}\'\) /verbose"
 
 # the following line should have been enough but makes the compilation fail on appveyor, seems like the csproj properties are not applied, probably a bug
 #SM_CMD="dotnet run --verbosity m --project Sharpmake.Application/Sharpmake.Application.csproj --configuration Debug /sources\(\'${SHARPMAKE_MAIN}\'\) /verbose"
