@@ -172,7 +172,11 @@ namespace Sharpmake
             if (assemblyInfo.UseDefaultReferences)
             {
                 foreach (string defaultReference in Assembler.DefaultReferences)
-                    references.Add(Assembler.GetAssemblyDllPath(defaultReference));
+                {
+                    var reference = Assembler.GetAssemblyDllPath(defaultReference);
+                    if (!string.IsNullOrEmpty(reference))
+                        references.Add(reference);
+                }
             }
 
             foreach (var assemblerRef in assemblyInfo.References)
