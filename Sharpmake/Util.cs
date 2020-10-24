@@ -22,6 +22,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Setup.Configuration;
@@ -2449,5 +2450,9 @@ namespace Sharpmake
             LogWrite("Warning: Couldn't determine running platform");
             return Platform.win64; // arbitrary
         }
+
+        private static readonly string s_framework = Assembly.GetEntryAssembly()?.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName;
+        private static readonly bool s_isDotNetCore = s_framework != null && !s_framework.StartsWith(".NETFramework");
+        public static bool IsRunningDotNetCore() => s_isDotNetCore;
     }
 }
