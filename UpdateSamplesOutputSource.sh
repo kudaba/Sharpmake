@@ -1,0 +1,15 @@
+samples;ConfigureOrder;main.sharpmake.cs;ConfigureOrder
+samples;CPPCLI;CLRTest.sharpmake.cs;CPPCLI
+samples;CSharpHelloWorld;HelloWorld.sharpmake.cs;CSharpHelloWorld
+samples;HelloWorld;HelloWorld.sharpmake.cs;HelloWorld
+samples;CSharpVsix;CSharpVsix.sharpmake.cs;CSharpVsix
+samples;CSharpWCF;CSharpWCF.sharpmake.cs;CSharpWCF/codebase
+samples;CSharpImports;CSharpImports.sharpmake.cs;CSharpImports
+samples;PackageReferences;PackageReferences.sharpmake.cs;PackageReferences
+samples;QTFileCustomBuild;QTFileCustomBuild.sharpmake.cs;QTFileCustomBuild
+samples;FastBuildSimpleExecutable;FastBuildSimpleExecutable.sharpmake.cs;FastBuildSimpleExecutable
+samples;SimpleExeLibDependency;SimpleExeLibDependency.sharpmake.cs;SimpleExeLibDependency
+samples;NetCore/DotNetCoreFrameworkHelloWorld;HelloWorld.sharpmake.cs;NetCore/DotNetCoreFrameworkHelloWorld
+samples;NetCore/DotNetFrameworkHelloWorld;HelloWorld.sharpmake.cs;NetCore/DotNetFrameworkHelloWorld
+samples;NetCore/DotNetMultiFrameworksHelloWorld;HelloWorld.sharpmake.cs;NetCore/DotNetMultiFrameworksHelloWorld
+Sharpmake.FunctionalTests;FastBuildFunctionalTest;FastBuildFunctionalTest.sharpmake.cs;FastBuildFunctionalTest
