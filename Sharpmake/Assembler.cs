@@ -450,7 +450,7 @@ namespace Sharpmake
             );
 
             // Create Compiler
-            var compiler = CSharpCompilation.Create("Sharpmake_Generated", syntaxTrees, references, options);
+            var compiler = CSharpCompilation.Create(Path.GetFileNameWithoutExtension(libraryFile), syntaxTrees, references, options);
 
             EmitResult compileResult;
 
